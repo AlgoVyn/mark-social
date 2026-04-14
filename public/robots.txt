@@ -1,8 +1,65 @@
+# robots.txt for Markdown2Social
+# https://algovyn.github.io/markdown2social/
+
 User-agent: *
 Allow: /
+Allow: /logo/
+Allow: /manifest.json
 
-# Sitemap
+# Disallow development and build artifacts
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Sitemap location
 Sitemap: https://algovyn.github.io/markdown2social/sitemap.xml
 
-# Crawl rate
-Crawl-delay: 10
+# Googlebot specific
+User-agent: Googlebot
+Allow: /
+Allow: /*.js
+Allow: /*.css
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.svg
+
+# Googlebot-Image
+User-agent: Googlebot-Image
+Allow: /logo/
+
+# Bingbot specific
+User-agent: Bingbot
+Allow: /
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+
+# Baidu
+User-agent: Baiduspider
+Allow: /
+
+# Yandex
+User-agent: Yandex
+Allow: /
+
+# Twitterbot for card previews
+User-agent: Twitterbot
+Allow: /
+Allow: /logo/
+
+# Facebook external hit for sharing
+User-agent: facebookexternalhit
+Allow: /
+Allow: /logo/
+
+# LinkedIn bot
+User-agent: LinkedInBot
+Allow: /
+Allow: /logo/
+
+# Host directive (for Yandex)
+Host: https://algovyn.github.io
+
+# Note: Crawl-delay is not supported by Google and can hurt crawl efficiency
+# We rely on proper sitemap and canonical URLs instead

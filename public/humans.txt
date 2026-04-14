@@ -1,0 +1,28 @@
+/* TEAM */
+    Developer: Markdown2Social Team
+    Contact: https://github.com/algovyn/markdown2social
+    From: Global
+
+/* THANKS */
+    React Team: https://react.dev/
+    Vite Team: https://vitejs.dev/
+    CodeMirror Team: https://codemirror.net/
+    Marked Library: https://marked.js.org/
+    Highlight.js Team: https://highlightjs.org/
+    Lucide Icons: https://lucide.dev/
+
+/* SITE */
+    Last update: 2026-04-14
+    Language: English
+    Doctype: HTML5
+    Standards: HTML5, CSS3, ES2022
+    Components: React 18, TypeScript, Vite
+    Software: VS Code, Git, GitHub Actions
+
+/* ABOUT */
+    Markdown2Social is a free, open-source tool that converts Markdown
+    to perfectly formatted social media posts. Built with love for
+    content creators who prefer writing in Markdown.
+
+    Repository: https://github.com/algovyn/markdown2social
+    License: MIT

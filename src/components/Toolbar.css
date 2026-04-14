@@ -174,15 +174,21 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Tooltip support for icon-only buttons */
+/* ============================================
+   TOOLTIP STYLES - Fixed for viewport edges
+   ============================================ */
+
+/* Base tooltip setup */
 .action-button {
   position: relative;
+  overflow: visible;
 }
 
+/* Tooltip bubble (default: positioned ABOVE button) */
 .action-button::after {
   content: attr(aria-label);
   position: absolute;
-  bottom: calc(100% + 8px);
+  bottom: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%) scale(0.9);
   padding: 0.5rem 0.75rem;
@@ -198,12 +204,15 @@
   transition: all var(--transition-fast);
   z-index: var(--z-tooltip);
   box-shadow: var(--shadow-lg);
+  max-width: 200px;
+  overflow-wrap: break-word;
 }
 
+/* Tooltip arrow (default: pointing DOWN from above) */
 .action-button::before {
   content: '';
   position: absolute;
-  bottom: calc(100% + 4px);
+  bottom: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%) scale(0);
   border-width: 5px;
@@ -215,6 +224,7 @@
   z-index: var(--z-tooltip);
 }
 
+/* Show tooltip on hover/focus */
 .action-button:hover::after,
 .action-button:focus-visible::after {
   opacity: 1;
@@ -229,6 +239,73 @@
   transform: translateX(-50%) scale(1);
 }
 
+/* ============================================
+   TOP-EDGE TOOLTIPS (toolbar buttons)
+   Position tooltips BELOW to avoid overflow
+   ============================================ */
+
+/* Toolbar buttons show tooltips BELOW instead of above
+   to prevent them from going off the top of the page */
+.toolbar .action-button::after {
+  bottom: auto;
+  top: calc(100% + 10px);
+  transform: translateX(-50%) scale(0.9);
+}
+
+.toolbar .action-button::before {
+  bottom: auto;
+  top: calc(100% + 5px);
+  border-color: transparent transparent var(--text-color) transparent;
+  transform: translateX(-50%) scale(0);
+}
+
+.toolbar .action-button:hover::after,
+.toolbar .action-button:focus-visible::after {
+  transform: translateX(-50%) scale(1);
+}
+
+.toolbar .action-button:hover::before,
+.toolbar .action-button:focus-visible::before {
+  transform: translateX(-50%) scale(1);
+}
+
+/* ============================================
+   RIGHT-EDGE TOOLTIPS (prevent overflow)
+   ============================================ */
+
+/* For buttons near the right edge, align tooltip to right */
+.toolbar-actions .action-button:last-child::after,
+.toolbar-actions .action-button:nth-last-child(2)::after {
+  left: auto;
+  right: 0;
+  transform: translateX(0) scale(0.9);
+}
+
+.toolbar-actions .action-button:last-child::before,
+.toolbar-actions .action-button:nth-last-child(2)::before {
+  left: auto;
+  right: 12px;
+  transform: translateX(0) scale(0);
+}
+
+.toolbar-actions .action-button:last-child:hover::after,
+.toolbar-actions .action-button:last-child:focus-visible::after,
+.toolbar-actions .action-button:nth-last-child(2):hover::after,
+.toolbar-actions .action-button:nth-last-child(2):focus-visible::after {
+  transform: translateX(0) scale(1);
+}
+
+.toolbar-actions .action-button:last-child:hover::before,
+.toolbar-actions .action-button:last-child:focus-visible::before,
+.toolbar-actions .action-button:nth-last-child(2):hover::before,
+.toolbar-actions .action-button:nth-last-child(2):focus-visible::before {
+  transform: translateX(0) scale(1);
+}
+
+/* ============================================
+   MOBILE & TOUCH ADAPTATIONS
+   ============================================ */
+
 /* Disable tooltips on touch devices */
 @media (pointer: coarse) {
   .action-button::after,
@@ -237,51 +314,22 @@
   }
 }
 
-/* Show tooltips on mobile when text is hidden */
+/* Mobile adaptations */
 @media (max-width: 768px) {
-  .action-button:not(.primary)::after {
-    content: attr(aria-label);
-  }
-
-  .action-button:not(.primary):hover::after,
-  .action-button:not(.primary):focus-visible::after {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) scale(1);
-  }
-
-  .action-button:not(.primary):hover::before,
-  .action-button:not(.primary):focus-visible::before {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) scale(1);
-  }
-}
-
-/* Ensure tooltips don't overflow on small screens */
-@media (max-width: 480px) {
-  .action-button::after {
+  /* Ensure tooltips are readable on mobile */
+  .toolbar .action-button::after {
+    font-size: 0.7rem;
+    padding: 0.375rem 0.5rem;
     max-width: 150px;
     white-space: normal;
     text-align: center;
-    left: 100%;
-    transform: translateX(-100%) scale(0.9);
-    bottom: calc(100% + 4px);
   }
+}
 
-  .action-button:hover::after,
-  .action-button:focus-visible::after {
-    transform: translateX(-100%) scale(1);
-  }
-
-  .action-button::before {
-    left: auto;
-    right: 12px;
-    transform: translateX(0) scale(0);
-  }
-
-  .action-button:hover::before,
-  .action-button:focus-visible::before {
-    transform: translateX(0) scale(1);
+/* Small screens - further adjustments */
+@media (max-width: 480px) {
+  .toolbar .action-button::after {
+    max-width: 120px;
+    font-size: 0.65rem;
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "Markdown2Social - Markdown to Social Media Converter",
   "short_name": "Markdown2Social",
-  "description": "Convert Markdown to perfectly formatted social media posts for Twitter/X, LinkedIn, Instagram, Mastodon, Bluesky, Reddit, YouTube, Discord, and Threads.",
+  "description": "Convert Markdown to perfectly formatted social media posts for Twitter/X, LinkedIn, Instagram, Mastodon, Bluesky, Reddit, YouTube, Discord, Facebook, TikTok, and Telegram.",
   "start_url": "/markdown2social/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -9,6 +9,7 @@
   "orientation": "any",
   "scope": "/markdown2social/",
   "lang": "en",
+  "dir": "ltr",
   "categories": ["productivity", "utilities", "social"],
   "icons": [
     {
@@ -16,14 +17,109 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/markdown2social/logo/logo-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/markdown2social/logo/logo-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/markdown2social/logo/logo-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/markdown2social/logo/logo-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/markdown2social/logo/logo-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/markdown2social/logo/logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/markdown2social/logo/logo-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/markdown2social/logo/logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
+  "screenshots": [
+    {
+      "src": "/markdown2social/logo/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Markdown2Social Editor Interface"
+    },
+    {
+      "src": "/markdown2social/logo/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Markdown2Social Mobile Interface"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "LinkedIn Formatter",
+      "short_name": "LinkedIn",
+      "description": "Convert Markdown to LinkedIn posts",
+      "url": "/markdown2social/#/linkedin",
+      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Twitter/X Formatter",
+      "short_name": "Twitter",
+      "description": "Convert Markdown to Twitter/X posts",
+      "url": "/markdown2social/#/twitter",
+      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Instagram Formatter",
+      "short_name": "Instagram",
+      "description": "Convert Markdown to Instagram captions",
+      "url": "/markdown2social/#/instagram",
+      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+    }
+  ],
   "features": [
     "Markdown parsing",
     "Multi-platform preview",
     "One-click copy",
     "Character counting",
-    "Offline support"
-  ]
+    "Thread splitting",
+    "Draft history",
+    "Unicode text formatting"
+  ],
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "https://algovyn.github.io/markdown2social/"
+    }
+  ],
+  "prefer_related_applications": false
 }
