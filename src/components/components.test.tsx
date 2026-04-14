@@ -46,13 +46,15 @@ describe('Toolbar', () => {
     expect(screen.getByText('Markdown2Social')).toBeInTheDocument();
     expect(screen.getByText('History')).toBeInTheDocument();
     expect(screen.getByText('Styles')).toBeInTheDocument();
-    expect(screen.getByText('Copy')).toBeInTheDocument();
+    expect(screen.getByLabelText('Copy formatted content to clipboard')).toBeInTheDocument();
   });
 
   it('should call onCopy when copy button is clicked', async () => {
     render(<Toolbar {...defaultProps} />);
 
-    const copyButton = screen.getByText('Copy').closest('button');
+    const copyButton = screen
+      .getByLabelText('Copy formatted content to clipboard')
+      .closest('button');
     expect(copyButton).not.toBeNull();
 
     if (copyButton) {

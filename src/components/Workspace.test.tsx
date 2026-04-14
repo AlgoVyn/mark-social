@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { screen, waitFor, act } from '@testing-library/react';
+import { renderWithRouter } from '../test/test-utils';
 import userEvent from '@testing-library/user-event';
-import { Workspace } from './Workspace';
 
 describe('Workspace', () => {
   beforeEach(() => {
@@ -16,13 +16,13 @@ describe('Workspace', () => {
 
   describe('initial render', () => {
     it('should render the workspace with toolbar and panes', () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       // Toolbar elements
-      expect(screen.getByText('Markdown2Social')).toBeInTheDocument();
+      expect(screen.getByText('Markdown2Social', { selector: '.logo-text' })).toBeInTheDocument();
       expect(screen.getByText('History')).toBeInTheDocument();
       expect(screen.getByText('Styles')).toBeInTheDocument();
-      expect(screen.getByText('Copy')).toBeInTheDocument();
+      expect(screen.getByLabelText('Copy formatted content to clipboard')).toBeInTheDocument();
 
       // Preview elements
       expect(screen.getByText('Live Preview')).toBeInTheDocument();
@@ -33,13 +33,13 @@ describe('Workspace', () => {
     });
 
     it('should display initial markdown content in preview', () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       // Query specifically within the preview area to avoid CodeMirror duplicates
       const previewContent = document.querySelector('.post-content');
       expect(previewContent).toBeInTheDocument();
       // The preview should contain the converted text content
-      expect(previewContent?.textContent).toMatch(/Write your post here/);
+      expect(previewContent?.textContent).toMatch(/👋|Markdown2Social converts/);
     });
   });
 
@@ -48,9 +48,11 @@ describe('Workspace', () => {
       const mockWriteText = vi.fn().mockResolvedValue(undefined);
       (navigator.clipboard.writeText as Mock).mockImplementation(mockWriteText);
 
-      render(<Workspace />);
+      renderWithRouter();
 
-      const copyButton = screen.getByText('Copy').closest('button');
+      const copyButton = screen
+        .getByLabelText('Copy formatted content to clipboard')
+        .closest('button');
       expect(copyButton).not.toBeNull();
 
       if (copyButton) {
@@ -63,7 +65,7 @@ describe('Workspace', () => {
 
         expect(mockWriteText).toHaveBeenCalledTimes(1);
         // The text should be the formatted version of initial content
-        expect(mockWriteText.mock.calls[0][0]).toContain('𝐇𝐞𝐥𝐥𝐨 𝐋𝐢𝐧𝐤𝐞𝐝𝐈𝐧'); // Unicode bold characters
+        expect(mockWriteText.mock.calls[0][0]).toContain('𝐖𝐞𝐥𝐜𝐨𝐦𝐞'); // Unicode bold characters
       }
     });
 
@@ -71,9 +73,11 @@ describe('Workspace', () => {
       const mockWriteText = vi.fn().mockResolvedValue(undefined);
       (navigator.clipboard.writeText as Mock).mockImplementation(mockWriteText);
 
-      render(<Workspace />);
+      renderWithRouter();
 
-      const copyButton = screen.getByText('Copy').closest('button');
+      const copyButton = screen
+        .getByLabelText('Copy formatted content to clipboard')
+        .closest('button');
       if (copyButton) {
         await userEvent.click(copyButton);
 
@@ -89,9 +93,11 @@ describe('Workspace', () => {
       const mockWriteText = vi.fn().mockRejectedValue(new Error('Copy failed'));
       (navigator.clipboard.writeText as Mock).mockImplementation(mockWriteText);
 
-      render(<Workspace />);
+      renderWithRouter();
 
-      const copyButton = screen.getByText('Copy').closest('button');
+      const copyButton = screen
+        .getByLabelText('Copy formatted content to clipboard')
+        .closest('button');
       if (copyButton) {
         await userEvent.click(copyButton);
 
@@ -111,9 +117,11 @@ describe('Workspace', () => {
       const originalWriteText = navigator.clipboard.writeText;
       (navigator.clipboard as any).writeText = undefined;
 
-      render(<Workspace />);
+      renderWithRouter();
 
-      const copyButton = screen.getByText('Copy').closest('button');
+      const copyButton = screen
+        .getByLabelText('Copy formatted content to clipboard')
+        .closest('button');
       if (copyButton) {
         await userEvent.click(copyButton);
 
@@ -132,10 +140,12 @@ describe('Workspace', () => {
       const mockWriteText = vi.fn().mockResolvedValue(undefined);
       (navigator.clipboard.writeText as Mock).mockImplementation(mockWriteText);
 
-      render(<Workspace />);
+      renderWithRouter();
 
       // First click - should use memoized value
-      const copyButton = screen.getByText('Copy').closest('button');
+      const copyButton = screen
+        .getByLabelText('Copy formatted content to clipboard')
+        .closest('button');
       if (copyButton) {
         await userEvent.click(copyButton);
 
@@ -148,7 +158,7 @@ describe('Workspace', () => {
         const firstCall = mockWriteText.mock.calls[0][0];
 
         // The content should be the formatted version with unicode bold
-        expect(firstCall).toContain('𝐇𝐞𝐥𝐥𝐨 𝐋𝐢𝐧𝐤𝐞𝐝𝐈𝐧');
+        expect(firstCall).toContain('𝐖𝐞𝐥𝐜𝐨𝐦𝐞');
 
         // Click again - should be identical (same memoized value)
         await userEvent.click(copyButton);
@@ -169,9 +179,11 @@ describe('Workspace', () => {
         .mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 500)));
       (navigator.clipboard.writeText as Mock).mockImplementation(mockWriteText);
 
-      render(<Workspace />);
+      renderWithRouter();
 
-      const copyButton = screen.getByText('Copy').closest('button');
+      const copyButton = screen
+        .getByLabelText('Copy formatted content to clipboard')
+        .closest('button');
       if (copyButton) {
         await userEvent.click(copyButton);
 
@@ -185,7 +197,7 @@ describe('Workspace', () => {
 
         // Button should return to normal state
         await waitFor(() => {
-          expect(screen.getByText('Copy')).toBeInTheDocument();
+          expect(screen.getByLabelText('Copy formatted content to clipboard')).toBeInTheDocument();
         });
       }
     });
@@ -193,7 +205,7 @@ describe('Workspace', () => {
 
   describe('style modal', () => {
     it('should open style modal when Styles button is clicked', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       const stylesButton = screen.getByText('Styles').closest('button');
       expect(stylesButton).not.toBeNull();
@@ -206,7 +218,7 @@ describe('Workspace', () => {
     });
 
     it('should close style modal when Done button is clicked', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       // Open modal
       const stylesButton = screen.getByText('Styles').closest('button');
@@ -225,7 +237,7 @@ describe('Workspace', () => {
     });
 
     it('should change format style when selecting different option', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       const stylesButton = screen.getByText('Styles').closest('button');
       if (stylesButton) {
@@ -242,7 +254,7 @@ describe('Workspace', () => {
 
   describe('history modal', () => {
     it('should open history modal when History button is clicked', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       const historyButton = screen.getByText('History').closest('button');
       expect(historyButton).not.toBeNull();
@@ -260,7 +272,7 @@ describe('Workspace', () => {
     });
 
     it('should show loading state on history button', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       const historyButton = screen.getByText('History').closest('button');
       if (historyButton) {
@@ -280,7 +292,7 @@ describe('Workspace', () => {
     });
 
     it('should close history modal when close button is clicked', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       const historyButton = screen.getByText('History').closest('button');
       if (historyButton) {
@@ -301,7 +313,7 @@ describe('Workspace', () => {
     });
 
     it('should show empty state when no drafts exist', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       const historyButton = screen.getByText('History').closest('button');
       if (historyButton) {
@@ -319,7 +331,7 @@ describe('Workspace', () => {
 
   describe('platform selection', () => {
     it('should display current platform in dropdown', () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       const trigger = screen.getByLabelText('Select social media platform');
       expect(trigger).toBeInTheDocument();
@@ -327,7 +339,7 @@ describe('Workspace', () => {
     });
 
     it('should maintain selected platform value', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       const trigger = screen.getByLabelText('Select social media platform');
       expect(trigger.textContent).toContain('LinkedIn');
@@ -337,9 +349,10 @@ describe('Workspace', () => {
       const twitterOption = screen.getByRole('option', { name: /Twitter\/X/i });
       await userEvent.click(twitterOption);
 
-      // Check that the trigger now shows Twitter
+      // Check that the trigger now shows Twitter - get fresh reference after navigation
       await waitFor(() => {
-        expect(trigger.textContent).toContain('Twitter');
+        const triggerAfter = screen.getByLabelText('Select social media platform');
+        expect(triggerAfter.textContent).toContain('Twitter');
       });
     });
   });
@@ -357,7 +370,7 @@ describe('Workspace', () => {
         writable: true,
       });
 
-      render(<Workspace />);
+      renderWithRouter();
 
       // Fast-forward past the 2-second debounce
       await act(async () => {
@@ -370,7 +383,7 @@ describe('Workspace', () => {
     });
 
     it('should clear timeout on unmount', () => {
-      const { unmount } = render(<Workspace />);
+      const { unmount } = renderWithRouter();
 
       // Should not throw when unmounting
       expect(() => unmount()).not.toThrow();
@@ -379,18 +392,18 @@ describe('Workspace', () => {
 
   describe('preview updates', () => {
     it('should update preview when content changes', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       // Query specifically within the preview area
       const previewContent = document.querySelector('.post-content');
       expect(previewContent).toBeInTheDocument();
 
       // Verify the preview contains the expected content
-      expect(previewContent?.textContent).toMatch(/Write your post here/);
+      expect(previewContent?.textContent).toMatch(/👋|Markdown2Social converts/);
     });
 
     it('should apply different styles to preview', async () => {
-      render(<Workspace />);
+      renderWithRouter();
 
       // Open style modal
       const stylesButton = screen.getByText('Styles').closest('button');

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://algovyn.github.io/markdown2social/sitemap.xml
+
+# Crawl rate
+Crawl-delay: 10

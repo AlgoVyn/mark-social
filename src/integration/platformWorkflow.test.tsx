@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, act } from '@testing-library/react';
+import { renderWithRouter } from '../test/test-utils';
 import userEvent from '@testing-library/user-event';
-import { Workspace } from '../components/Workspace';
 
 describe('Platform Workflow Integration', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Platform Workflow Integration', () => {
   });
 
   it('should switch platforms and update preview', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Initial platform should be LinkedIn
     const select = screen.getByLabelText('Select social media platform');
@@ -27,7 +27,7 @@ describe('Platform Workflow Integration', () => {
   }, 10000);
 
   it('should show character counter for current platform', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Should show character counter with LinkedIn limits (3000 without comma)
     expect(screen.getByText('3000')).toBeInTheDocument();
@@ -45,7 +45,7 @@ describe('Platform Workflow Integration', () => {
   }, 10000);
 
   it('should handle Twitter thread preview for long content', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Switch to Twitter
     const select = screen.getByLabelText('Select social media platform');
@@ -60,10 +60,10 @@ describe('Platform Workflow Integration', () => {
   }, 10000);
 
   it('should copy content formatted for selected platform', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Click copy button
-    const copyButton = screen.getByText('Copy');
+    const copyButton = screen.getByLabelText('Copy formatted content to clipboard');
     await userEvent.click(copyButton);
 
     // Should call clipboard API
@@ -76,7 +76,7 @@ describe('Platform Workflow Integration', () => {
   }, 10000);
 
   it('should update character count as user types', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Initial count should be from default content
     // Just verify counter exists
@@ -84,7 +84,7 @@ describe('Platform Workflow Integration', () => {
   }, 10000);
 
   it('should maintain platform state when opening modals', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Switch to Bluesky
     const select = screen.getByLabelText('Select social media platform');
@@ -100,12 +100,13 @@ describe('Platform Workflow Integration', () => {
     const closeButton = await screen.findByText('×');
     await userEvent.click(closeButton);
 
-    // Platform should still be Bluesky
-    expect(select.textContent).toContain('Bluesky');
+    // Platform should still be Bluesky - get fresh reference after modal close
+    const selectAfterClose = screen.getByLabelText('Select social media platform');
+    expect(selectAfterClose.textContent).toContain('Bluesky');
   }, 10000);
 
   it('should show different character limits for different platforms', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     const select = screen.getByLabelText('Select social media platform');
 
@@ -120,8 +121,14 @@ describe('Platform Workflow Integration', () => {
       expect(screen.getByText('280')).toBeInTheDocument();
     });
 
-    // Switch to Mastodon
-    await userEvent.click(select);
+    // Wait for navigation to complete and dropdown to be ready
+    await act(async () => {
+      // Small delay to ensure navigation completes
+    });
+
+    // Switch to Mastodon - need to get fresh reference to select after navigation
+    const select2 = screen.getByLabelText('Select social media platform');
+    await userEvent.click(select2);
     const mastodonOption2 = screen.getByRole('option', { name: /Mastodon/i });
     await userEvent.click(mastodonOption2);
     await waitFor(() => {
@@ -130,7 +137,7 @@ describe('Platform Workflow Integration', () => {
   }, 10000);
 
   it('should handle all supported platforms in dropdown', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Open the dropdown
     const trigger = screen.getByLabelText('Select social media platform');
@@ -149,7 +156,7 @@ describe('Platform Workflow Integration', () => {
   }, 10000);
 
   it('should show warning state when approaching character limit', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Switch to Twitter (280 char limit)
     const select = screen.getByLabelText('Select social media platform');
@@ -164,7 +171,7 @@ describe('Platform Workflow Integration', () => {
   }, 10000);
 
   it('should handle invalid platform gracefully', async () => {
-    render(<Workspace />);
+    renderWithRouter();
 
     // Platform select should handle any value gracefully
     const select = screen.getByLabelText('Select social media platform');

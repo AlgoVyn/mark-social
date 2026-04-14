@@ -1,0 +1,29 @@
+{
+  "name": "Markdown2Social - Markdown to Social Media Converter",
+  "short_name": "Markdown2Social",
+  "description": "Convert Markdown to perfectly formatted social media posts for Twitter/X, LinkedIn, Instagram, Mastodon, Bluesky, Reddit, YouTube, Discord, and Threads.",
+  "start_url": "/markdown2social/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007acc",
+  "orientation": "any",
+  "scope": "/markdown2social/",
+  "lang": "en",
+  "categories": ["productivity", "utilities", "social"],
+  "icons": [
+    {
+      "src": "/markdown2social/logo/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "features": [
+    "Markdown parsing",
+    "Multi-platform preview",
+    "One-click copy",
+    "Character counting",
+    "Offline support"
+  ]
+}

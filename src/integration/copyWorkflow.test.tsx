@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { screen, waitFor, act } from '@testing-library/react';
+import { renderWithRouter } from '../test/test-utils';
 import userEvent from '@testing-library/user-event';
-import { Workspace } from '../components/Workspace';
 
 describe('Copy Workflow Integration', () => {
   beforeEach(() => {
@@ -18,15 +18,17 @@ describe('Copy Workflow Integration', () => {
     const mockWriteText = vi.fn().mockResolvedValue(undefined);
     (navigator.clipboard.writeText as any) = mockWriteText;
 
-    render(<Workspace />);
+    renderWithRouter();
 
     // Verify initial state - preview shows formatted content
     expect(screen.getByText('Live Preview')).toBeInTheDocument();
     const previewContent = document.querySelector('.post-content');
-    expect(previewContent?.textContent).toMatch(/Write your post here/);
+    expect(previewContent?.textContent?.length).toBeGreaterThan(100);
 
     // Click copy button
-    const copyButton = screen.getByText('Copy').closest('button');
+    const copyButton = screen
+      .getByLabelText('Copy formatted content to clipboard')
+      .closest('button');
     expect(copyButton).not.toBeNull();
 
     if (copyButton) {
@@ -42,7 +44,7 @@ describe('Copy Workflow Integration', () => {
       const clipboardContent = mockWriteText.mock.calls[0][0];
 
       // Content should be formatted with unicode bold
-      expect(clipboardContent).toContain('𝐇𝐞𝐥𝐥𝐨 𝐋𝐢𝐧𝐤𝐞𝐝𝐈𝐧');
+      expect(clipboardContent).toContain('𝐖𝐞𝐥𝐜𝐨𝐦𝐞');
 
       // Verify success toast appears
       await waitFor(() => {
@@ -57,9 +59,11 @@ describe('Copy Workflow Integration', () => {
     const mockWriteText = vi.fn().mockRejectedValue(new Error('Clipboard permission denied'));
     (navigator.clipboard.writeText as any) = mockWriteText;
 
-    render(<Workspace />);
+    renderWithRouter();
 
-    const copyButton = screen.getByText('Copy').closest('button');
+    const copyButton = screen
+      .getByLabelText('Copy formatted content to clipboard')
+      .closest('button');
     if (copyButton) {
       await userEvent.click(copyButton);
 
@@ -79,9 +83,11 @@ describe('Copy Workflow Integration', () => {
     const mockWriteText = vi.fn().mockResolvedValue(undefined);
     (navigator.clipboard.writeText as any) = mockWriteText;
 
-    render(<Workspace />);
+    renderWithRouter();
 
-    const copyButton = screen.getByText('Copy').closest('button');
+    const copyButton = screen
+      .getByLabelText('Copy formatted content to clipboard')
+      .closest('button');
     if (copyButton) {
       await userEvent.click(copyButton);
 
@@ -102,9 +108,11 @@ describe('Copy Workflow Integration', () => {
     const mockWriteText = vi.fn().mockResolvedValue(undefined);
     (navigator.clipboard.writeText as any) = mockWriteText;
 
-    render(<Workspace />);
+    renderWithRouter();
 
-    const copyButton = screen.getByText('Copy').closest('button');
+    const copyButton = screen
+      .getByLabelText('Copy formatted content to clipboard')
+      .closest('button');
     if (copyButton) {
       // Copy multiple times
       await userEvent.click(copyButton);
@@ -137,9 +145,11 @@ describe('Copy Workflow Integration', () => {
     const mockWriteText = vi.fn().mockResolvedValue(undefined);
     (navigator.clipboard.writeText as any) = mockWriteText;
 
-    render(<Workspace />);
+    renderWithRouter();
 
-    const copyButton = screen.getByText('Copy').closest('button');
+    const copyButton = screen
+      .getByLabelText('Copy formatted content to clipboard')
+      .closest('button');
     if (copyButton) {
       await userEvent.click(copyButton);
 
