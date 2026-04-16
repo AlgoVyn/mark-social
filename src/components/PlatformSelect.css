@@ -51,7 +51,7 @@
   .platform-select-trigger:active {
     transform: scale(0.96);
   }
-  
+
   .platform-select-trigger:hover {
     transform: none;
   }
@@ -146,7 +146,7 @@
     transform: scale(0.98);
     background-color: var(--secondary-hover);
   }
-  
+
   .platform-select-option.selected:active {
     background-color: var(--primary-color);
     opacity: 0.9;

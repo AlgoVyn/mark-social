@@ -19,50 +19,20 @@
       "purpose": "any maskable"
     },
     {
-      "src": "/markdown2social/logo/logo-72x72.png",
-      "sizes": "72x72",
+      "src": "/markdown2social/logo/logo-16x16.png",
+      "sizes": "16x16",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/markdown2social/logo/logo-96x96.png",
-      "sizes": "96x96",
+      "src": "/markdown2social/logo/logo-32x32.png",
+      "sizes": "32x32",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/markdown2social/logo/logo-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/markdown2social/logo/logo-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/markdown2social/logo/logo-152x152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/markdown2social/logo/logo-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/markdown2social/logo/logo-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/markdown2social/logo/logo-512x512.png",
-      "sizes": "512x512",
+      "src": "/markdown2social/logo/logo-180x180.png",
+      "sizes": "180x180",
       "type": "image/png",
       "purpose": "any maskable"
     }
@@ -74,13 +44,6 @@
       "type": "image/png",
       "form_factor": "wide",
       "label": "Markdown2Social Editor Interface - Desktop View"
-    },
-    {
-      "src": "/markdown2social/logo/screenshot-narrow.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Markdown2Social Editor Interface - Mobile View"
     }
   ],
   "shortcuts": [
@@ -89,42 +52,42 @@
       "short_name": "LinkedIn",
       "description": "Convert Markdown to LinkedIn posts",
       "url": "/markdown2social/linkedin/",
-      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/markdown2social/logo/logo-32x32.png", "sizes": "32x32" }]
     },
     {
       "name": "Twitter/X Formatter",
       "short_name": "Twitter",
       "description": "Convert Markdown to Twitter/X posts",
       "url": "/markdown2social/twitter/",
-      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/markdown2social/logo/logo-32x32.png", "sizes": "32x32" }]
     },
     {
       "name": "Instagram Formatter",
       "short_name": "Instagram",
       "description": "Convert Markdown to Instagram captions",
       "url": "/markdown2social/instagram/",
-      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/markdown2social/logo/logo-32x32.png", "sizes": "32x32" }]
     },
     {
       "name": "Mastodon Formatter",
       "short_name": "Mastodon",
       "description": "Convert Markdown to Mastodon toots",
       "url": "/markdown2social/mastodon/",
-      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/markdown2social/logo/logo-32x32.png", "sizes": "32x32" }]
     },
     {
       "name": "Bluesky Formatter",
       "short_name": "Bluesky",
       "description": "Convert Markdown to Bluesky posts",
       "url": "/markdown2social/bluesky/",
-      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/markdown2social/logo/logo-32x32.png", "sizes": "32x32" }]
     },
     {
       "name": "Threads Formatter",
       "short_name": "Threads",
       "description": "Convert Markdown to Threads posts",
       "url": "/markdown2social/threads/",
-      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/markdown2social/logo/logo-32x32.png", "sizes": "32x32" }]
     }
   ],
   "features": [
