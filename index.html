@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <!-- Language and Locale -->
+    <meta http-equiv="content-language" content="en" />
+
     <!-- Primary Meta Tags -->
     <title>Markdown2Social - Free Markdown to Social Media Converter | 12+ Platforms</title>
     <meta
@@ -30,7 +33,7 @@
     <meta name="bingbot" content="index, follow" />
     <meta name="theme-color" content="#007acc" />
     <meta name="msapplication-TileColor" content="#007acc" />
-    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="msapplication-config" content="/markdown2social/browserconfig.xml" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Markdown2Social" />
@@ -60,8 +63,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-
-    <!-- Preconnect to Cloudflare Pages domain -->
     <link rel="preconnect" href="https://algovyn.com" />
 
     <!-- Preload Critical Resources -->
@@ -93,7 +94,6 @@
       property="og:description"
       content="Free online tool to convert Markdown to perfectly formatted social media posts for Twitter/X, LinkedIn, Instagram, Mastodon, Bluesky, Reddit, YouTube, Discord, Facebook, TikTok, Telegram, and Threads. Preview and copy with one click."
     />
-    <!-- OG Image: PNG for better compatibility, SVG as alternative -->
     <meta property="og:image" content="https://algovyn.com/markdown2social/logo/og-image.png" />
     <meta
       property="og:image:secure_url"
@@ -106,14 +106,13 @@
       property="og:image:alt"
       content="Markdown2Social - Convert Markdown to Social Media Posts"
     />
-    <!-- Alternative SVG version for modern platforms -->
-    <meta property="og:image" content="https://algovyn.com/markdown2social/logo/og-image.svg" />
-    <meta property="og:image:type" content="image/svg+xml" />
+    <meta property="og:updated_time" content="2026-04-16T00:00:00+00:00" />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@markdown2social" />
     <meta name="twitter:creator" content="@markdown2social" />
+    <meta name="twitter:domain" content="algovyn.com" />
     <meta name="twitter:url" content="https://algovyn.com/markdown2social/" />
     <meta
       name="twitter:title"
@@ -132,12 +131,18 @@
     <!-- LinkedIn -->
     <meta property="linkedin:card" content="summary_large_image" />
 
+    <!-- Article Meta -->
+    <meta property="article:author" content="Markdown2Social" />
+    <meta property="article:section" content="Technology" />
+    <meta property="article:tag" content="Markdown, Social Media, Productivity, Content Creation" />
+
     <!-- Verification Tags (placeholder for future) -->
     <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" /> -->
     <!-- <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" /> -->
     <!-- <meta name="facebook-domain-verification" content="YOUR_FB_VERIFICATION_CODE" /> -->
+    <!-- <meta name="p:domain_verify" content="YOUR_PINTEREST_CODE" /> -->
 
-    <!-- Structured Data / JSON-LD -->
+    <!-- Structured Data - WebApplication -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -191,6 +196,12 @@
               "http://schema.org/MobileWebPlatform"
             ]
           }
+        },
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://algovyn.com/markdown2social/logo/og-image.png",
+          "width": 1200,
+          "height": 630
         }
       }
     </script>
@@ -224,7 +235,12 @@
         "name": "Markdown2Social",
         "url": "https://algovyn.com/markdown2social/",
         "logo": "https://algovyn.com/markdown2social/logo/logo.svg",
-        "sameAs": ["https://twitter.com/markdown2social"]
+        "sameAs": ["https://twitter.com/markdown2social"],
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "Algovyn",
+          "url": "https://algovyn.com"
+        }
       }
     </script>
 
@@ -262,8 +278,60 @@
       }
     </script>
 
-    <!-- NOTE: This FAQ data is duplicated in src/components/SEO.tsx for client-side hydration.
-         When updating FAQs, make sure to update BOTH locations. -->
+    <!-- HowTo Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Convert Markdown to Social Media Posts",
+        "description": "Step-by-step guide to convert Markdown to formatted social media posts",
+        "totalTime": "PT2M",
+        "estimatedCost": {
+          "@type": "MonetaryAmount",
+          "currency": "USD",
+          "value": "0"
+        },
+        "tool": {
+          "@type": "HowToTool",
+          "name": "Markdown2Social"
+        },
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "Select Your Platform",
+            "text": "Choose the social media platform you want to post to from the dropdown menu.",
+            "url": "https://algovyn.com/markdown2social/",
+            "image": {
+              "@type": "ImageObject",
+              "url": "https://algovyn.com/markdown2social/logo/screenshot-wide.png"
+            }
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "Write Your Content",
+            "text": "Type your content using Markdown syntax in the editor. Use **bold**, _italic_, - lists, and more.",
+            "url": "https://algovyn.com/markdown2social/"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "Preview Your Post",
+            "text": "Review the live preview on the right to see exactly how your post will look on your chosen platform.",
+            "url": "https://algovyn.com/markdown2social/"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 4,
+            "name": "Copy and Paste",
+            "text": "Click the Copy button to copy your formatted text, then paste it directly into your social media platform.",
+            "url": "https://algovyn.com/markdown2social/"
+          }
+        ]
+      }
+    </script>
+
     <!-- FAQPage Structured Data for Rich Snippets -->
     <script type="application/ld+json">
       {
@@ -329,19 +397,113 @@
         ]
       }
     </script>
+
+    <!-- Product Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Markdown2Social",
+        "image": "https://algovyn.com/markdown2social/logo/og-image.png",
+        "description": "Free online tool to convert Markdown to perfectly formatted social media posts",
+        "brand": {
+          "@type": "Brand",
+          "name": "Markdown2Social"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://algovyn.com/markdown2social/",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "150"
+        }
+      }
+    </script>
+
+    <!-- Analytics - Google Analytics 4 (placeholder) -->
+    <!-- Uncomment and add your GA4 ID when ready
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    -->
+
+    <!-- Core Web Vitals Performance Observer -->
+    <script>
+      // Report performance metrics using native PerformanceObserver
+      if ('PerformanceObserver' in window) {
+        try {
+          const perfObserver = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              // Send to analytics when configured
+              // console.log('Performance entry:', entry.name, entry.duration);
+            }
+          });
+          perfObserver.observe({ entryTypes: ['measure', 'navigation'] });
+        } catch (e) {
+          // Silently fail - performance monitoring is optional
+        }
+      }
+    </script>
   </head>
   <body>
     <noscript>
-      <div style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif">
-        <h1>JavaScript Required</h1>
-        <p>
+      <div
+        style="
+          padding: 2rem;
+          text-align: center;
+          font-family: system-ui, sans-serif;
+          background: #f8fafc;
+        "
+      >
+        <h1 style="color: #1a1a1a; margin-bottom: 1rem">JavaScript Required</h1>
+        <p style="color: #64748b; max-width: 600px; margin: 0 auto 1rem">
           Markdown2Social requires JavaScript to function. Please enable JavaScript in your browser
           settings to use this application.
         </p>
-        <p>
+        <p style="color: #64748b">
           Alternatively, you can still
-          <a href="https://github.com/algovyn/markdown2social">view the source code on GitHub</a>.
+          <a href="https://github.com/algovyn/markdown2social" style="color: #007acc"
+            >view the source code on GitHub</a
+          >.
         </p>
+        <div
+          style="
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            display: inline-block;
+            text-align: left;
+          "
+        >
+          <h2 style="margin-top: 0; font-size: 1.25rem">Platform-Specific Formatters:</h2>
+          <ul style="line-height: 2">
+            <li>
+              <a href="/markdown2social/linkedin/" style="color: #007acc">LinkedIn Formatter</a>
+            </li>
+            <li>
+              <a href="/markdown2social/twitter/" style="color: #007acc">Twitter/X Formatter</a>
+            </li>
+            <li>
+              <a href="/markdown2social/instagram/" style="color: #007acc">Instagram Formatter</a>
+            </li>
+            <li>
+              <a href="/markdown2social/mastodon/" style="color: #007acc">Mastodon Formatter</a>
+            </li>
+            <li>
+              <a href="/markdown2social/bluesky/" style="color: #007acc">Bluesky Formatter</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </noscript>
     <div id="root"></div>

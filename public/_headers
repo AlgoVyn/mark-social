@@ -1,0 +1,31 @@
+# Cloudflare Pages Security Headers
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# Global headers for all routes
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  X-DNS-Prefetch-Control: on
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# Cache static assets for 1 year (immutable)
+/markdown2social/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache images for 1 week
+/markdown2social/logo/*
+  Cache-Control: public, max-age=604800, immutable
+
+# Cache manifest and config files for 1 day
+/markdown2social/manifest.json
+  Cache-Control: public, max-age=86400
+
+/markdown2social/browserconfig.xml
+  Cache-Control: public, max-age=86400
+
+# Security headers for sensitive files
+/markdown2social/.well-known/security.txt
+  Content-Type: text/plain; charset=utf-8
+  X-Content-Type-Options: nosniff

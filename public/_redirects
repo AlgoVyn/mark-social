@@ -1,0 +1,64 @@
+# Cloudflare Pages SPA Configuration
+# https://developers.cloudflare.com/pages/configuration/redirects/
+# Rules are processed in order - first match wins
+
+# ============================================
+# 1. ROOT-LEVEL SHORTCUTS (add /markdown2social/ prefix)
+# ============================================
+# These redirect bare paths to the full application path
+/linkedin/    /markdown2social/linkedin/    301
+/twitter/     /markdown2social/twitter/     301
+/instagram/   /markdown2social/instagram/   301
+/threads/     /markdown2social/threads/     301
+/mastodon/    /markdown2social/mastodon/    301
+/bluesky/     /markdown2social/bluesky/     301
+/discord/     /markdown2social/discord/     301
+/reddit/      /markdown2social/reddit/      301
+/youtube/     /markdown2social/youtube/     301
+/facebook/    /markdown2social/facebook/    301
+/tiktok/      /markdown2social/tiktok/      301
+/telegram/    /markdown2social/telegram/    301
+
+# ============================================
+# 2. TRAILING SLASH NORMALIZATION
+# ============================================
+# Redirect paths without trailing slash to version with slash
+# This ensures consistent URLs and prevents double redirects
+/linkedin    /linkedin/    301
+/twitter     /twitter/    301
+/instagram   /instagram/  301
+/threads     /threads/    301
+/mastodon    /mastodon/   301
+/bluesky     /bluesky/    301
+/discord     /discord/    301
+/reddit      /reddit/     301
+/youtube     /youtube/    301
+/facebook    /facebook/   301
+/tiktok      /tiktok/     301
+/telegram    /telegram/   301
+
+# ============================================
+# 2.5 FULL PATH TRAILING SLASH NORMALIZATION
+# ============================================
+# Redirect /markdown2social/platform to /markdown2social/platform/
+# This handles direct access without trailing slash after the prefix
+/markdown2social/linkedin    /markdown2social/linkedin/    301
+/markdown2social/twitter     /markdown2social/twitter/     301
+/markdown2social/instagram   /markdown2social/instagram/   301
+/markdown2social/threads     /markdown2social/threads/     301
+/markdown2social/mastodon    /markdown2social/mastodon/    301
+/markdown2social/bluesky     /markdown2social/bluesky/     301
+/markdown2social/discord     /markdown2social/discord/     301
+/markdown2social/reddit      /markdown2social/reddit/      301
+/markdown2social/youtube     /markdown2social/youtube/     301
+/markdown2social/facebook    /markdown2social/facebook/    301
+/markdown2social/tiktok      /markdown2social/tiktok/      301
+/markdown2social/telegram    /markdown2social/telegram/    301
+
+# ============================================
+# 3. SPA FALLBACK (MUST BE LAST)
+# ============================================
+# For any path under /markdown2social/ that doesn't match a static file,
+# serve the index.html (client-side routing will handle it)
+# Using 200 status to rewrite (not redirect) - preserves URL in address bar
+/markdown2social/*    /markdown2social/index.html   200

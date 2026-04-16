@@ -2,10 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
   <!-- Homepage / Default -->
   <url>
     <loc>https://algovyn.com/markdown2social/</loc>
-    <lastmod>2026-04-14</lastmod>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -22,10 +23,10 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://algovyn.com/markdown2social/" />
   </url>
 
-  <!-- LinkedIn Formatter -->
+  <!-- LinkedIn Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/linkedin</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/linkedin/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -33,13 +34,13 @@
       <image:title>LinkedIn Post Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to perfectly formatted LinkedIn posts</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/linkedin" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/linkedin/" />
   </url>
 
-  <!-- Twitter/X Formatter -->
+  <!-- Twitter/X Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/twitter</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/twitter/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -47,13 +48,13 @@
       <image:title>Twitter/X Post Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Twitter/X posts and threads</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/twitter" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/twitter/" />
   </url>
 
-  <!-- Instagram Formatter -->
+  <!-- Instagram Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/instagram</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/instagram/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -61,13 +62,13 @@
       <image:title>Instagram Caption Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Instagram captions</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/instagram" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/instagram/" />
   </url>
 
-  <!-- Threads Formatter -->
+  <!-- Threads Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/threads</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/threads/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -75,13 +76,13 @@
       <image:title>Threads Post Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Threads posts</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/threads" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/threads/" />
   </url>
 
-  <!-- Mastodon Formatter -->
+  <!-- Mastodon Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/mastodon</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/mastodon/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -89,13 +90,13 @@
       <image:title>Mastodon Post Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Mastodon toots</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/mastodon" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/mastodon/" />
   </url>
 
-  <!-- Bluesky Formatter -->
+  <!-- Bluesky Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/bluesky</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/bluesky/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -103,13 +104,13 @@
       <image:title>Bluesky Post Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Bluesky posts</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/bluesky" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/bluesky/" />
   </url>
 
-  <!-- Discord Formatter -->
+  <!-- Discord Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/discord</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/discord/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -117,13 +118,13 @@
       <image:title>Discord Message Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Discord messages</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/discord" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/discord/" />
   </url>
 
-  <!-- Reddit Formatter -->
+  <!-- Reddit Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/reddit</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/reddit/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -131,13 +132,13 @@
       <image:title>Reddit Post Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Reddit posts</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/reddit" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/reddit/" />
   </url>
 
-  <!-- YouTube Formatter -->
+  <!-- YouTube Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/youtube</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/youtube/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -145,13 +146,13 @@
       <image:title>YouTube Description Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to YouTube video descriptions</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/youtube" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/youtube/" />
   </url>
 
-  <!-- Facebook Formatter -->
+  <!-- Facebook Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/facebook</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/facebook/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -159,13 +160,13 @@
       <image:title>Facebook Post Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Facebook posts</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/facebook" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/facebook/" />
   </url>
 
-  <!-- TikTok Formatter -->
+  <!-- TikTok Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/tiktok</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/tiktok/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -173,13 +174,13 @@
       <image:title>TikTok Caption Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to TikTok captions</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/tiktok" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/tiktok/" />
   </url>
 
-  <!-- Telegram Formatter -->
+  <!-- Telegram Formatter Landing Page -->
   <url>
-    <loc>https://algovyn.com/markdown2social/#/telegram</loc>
-    <lastmod>2026-04-14</lastmod>
+    <loc>https://algovyn.com/markdown2social/telegram/</loc>
+    <lastmod>2026-04-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -187,6 +188,7 @@
       <image:title>Telegram Message Formatter - Markdown2Social</image:title>
       <image:caption>Convert Markdown to Telegram messages</image:caption>
     </image:image>
-    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/#/telegram" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://algovyn.com/markdown2social/telegram/" />
   </url>
+
 </urlset>

@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Workspace } from './components/Workspace';
 import { PLATFORM_CONFIGS } from './utils/platforms';
 
@@ -10,7 +10,7 @@ const platformRoutes = Object.keys(PLATFORM_CONFIGS).map((platform) => (
 function App() {
   return (
     <div className="app-container">
-      <HashRouter>
+      <BrowserRouter basename="/markdown2social">
         <Routes>
           {/* Default route - Generic SEO for home page */}
           <Route path="/" element={<Workspace initialPlatform="default" />} />
@@ -21,7 +21,7 @@ function App() {
           {/* Redirect unknown routes to home */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </div>
   );
 }

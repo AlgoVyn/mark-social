@@ -73,14 +73,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Markdown2Social Editor Interface"
+      "label": "Markdown2Social Editor Interface - Desktop View"
     },
     {
       "src": "/markdown2social/logo/screenshot-narrow.png",
       "sizes": "750x1334",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Markdown2Social Mobile Interface"
+      "label": "Markdown2Social Editor Interface - Mobile View"
     }
   ],
   "shortcuts": [
@@ -88,21 +88,42 @@
       "name": "LinkedIn Formatter",
       "short_name": "LinkedIn",
       "description": "Convert Markdown to LinkedIn posts",
-      "url": "/markdown2social/#/linkedin",
+      "url": "/markdown2social/linkedin/",
       "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Twitter/X Formatter",
       "short_name": "Twitter",
       "description": "Convert Markdown to Twitter/X posts",
-      "url": "/markdown2social/#/twitter",
+      "url": "/markdown2social/twitter/",
       "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
     },
     {
       "name": "Instagram Formatter",
       "short_name": "Instagram",
       "description": "Convert Markdown to Instagram captions",
-      "url": "/markdown2social/#/instagram",
+      "url": "/markdown2social/instagram/",
+      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Mastodon Formatter",
+      "short_name": "Mastodon",
+      "description": "Convert Markdown to Mastodon toots",
+      "url": "/markdown2social/mastodon/",
+      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Bluesky Formatter",
+      "short_name": "Bluesky",
+      "description": "Convert Markdown to Bluesky posts",
+      "url": "/markdown2social/bluesky/",
+      "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Threads Formatter",
+      "short_name": "Threads",
+      "description": "Convert Markdown to Threads posts",
+      "url": "/markdown2social/threads/",
       "icons": [{ "src": "/markdown2social/logo/logo-96x96.png", "sizes": "96x96" }]
     }
   ],
@@ -113,7 +134,8 @@
     "Character counting",
     "Thread splitting",
     "Draft history",
-    "Unicode text formatting"
+    "Unicode text formatting",
+    "Live preview"
   ],
   "related_applications": [
     {
@@ -121,5 +143,12 @@
       "url": "https://algovyn.com/markdown2social/"
     }
   ],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "handle_links": "preferred"
 }

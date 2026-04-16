@@ -108,6 +108,9 @@ const BASE_URL = import.meta.env.VITE_BASE_URL || 'https://algovyn.com/markdown2
 const OG_IMAGE_WIDTH = '1200';
 const OG_IMAGE_HEIGHT = '630';
 
+// Software version for structured data
+const SOFTWARE_VERSION = import.meta.env.__APP_VERSION__ || '1.0.0';
+
 // NOTE: This FAQ data is duplicated in index.html for server-side rendering.
 // When updating FAQs, make sure to update BOTH locations.
 // FAQ structured data for rich snippets
@@ -178,12 +181,10 @@ export const SEO: React.FC<SEOProps> = ({ platform }) => {
   const config = PLATFORM_CONFIGS[platform];
   // Use DEFAULT_SEO for home page ('default'), otherwise use platform-specific SEO
   const seo = platform === 'default' ? DEFAULT_SEO : PLATFORM_SEO[platform] || DEFAULT_SEO;
-  // For canonical URL: home page is just BASE_URL, linkedin is also BASE_URL (same as home),
-  // other platforms get their own URL
+  // For canonical URL: home page is just BASE_URL
+  // Platform pages now have clean URLs (e.g., /markdown2social/linkedin/)
   const canonicalUrl =
-    !platform || platform === 'default' || platform === 'linkedin'
-      ? `${BASE_URL}/`
-      : `${BASE_URL}/#/${platform}`;
+    !platform || platform === 'default' ? `${BASE_URL}/` : `${BASE_URL}/${platform}/`;
 
   useEffect(() => {
     // Update document title
@@ -300,7 +301,7 @@ export const SEO: React.FC<SEOProps> = ({ platform }) => {
         priceCurrency: 'USD',
       },
       featureList: `Markdown parsing, ${config?.name || 'Social media'} preview, One-click copy, Character counting, Thread splitting, Format optimization, Draft history`,
-      softwareVersion: '1.0.0',
+      softwareVersion: SOFTWARE_VERSION,
       author: {
         '@type': 'Organization',
         name: 'Markdown2Social',

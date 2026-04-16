@@ -5,6 +5,19 @@ User-agent: *
 Allow: /
 Allow: /logo/
 Allow: /manifest.json
+Allow: /sitemap.xml
+Allow: /linkedin/
+Allow: /twitter/
+Allow: /instagram/
+Allow: /threads/
+Allow: /mastodon/
+Allow: /bluesky/
+Allow: /discord/
+Allow: /reddit/
+Allow: /youtube/
+Allow: /facebook/
+Allow: /tiktok/
+Allow: /telegram/
 
 # Disallow development and build artifacts
 Disallow: /src/
@@ -22,6 +35,7 @@ Allow: /*.css
 Allow: /*.png
 Allow: /*.jpg
 Allow: /*.svg
+Allow: /*.webp
 
 # Googlebot-Image
 User-agent: Googlebot-Image
@@ -60,6 +74,3 @@ Allow: /logo/
 
 # Host directive (for Yandex)
 Host: https://algovyn.com
-
-# Note: Crawl-delay is not supported by Google and can hurt crawl efficiency
-# We rely on proper sitemap and canonical URLs instead

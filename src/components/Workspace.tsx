@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Toolbar } from './Toolbar';
 import { MarkdownEditor } from './MarkdownEditor';
 import { LivePreview } from './LivePreview';
@@ -26,6 +26,22 @@ const useSafeNavigate = () => {
   } catch {
     // Return no-op if not in Router context (e.g., during tests)
     return () => {};
+  }
+};
+
+// Custom hook for search params
+const useSafeSearchParams = (): [
+  URLSearchParams,
+  (
+    params?: URLSearchParams | ((prev: URLSearchParams) => URLSearchParams),
+    opts?: { replace?: boolean }
+  ) => void,
+] => {
+  try {
+    return useSearchParams();
+  } catch {
+    // Return default for tests
+    return [new URLSearchParams(), (_p, _o?) => {}];
   }
 };
 
@@ -280,8 +296,18 @@ Write your Telegram message here...`,
 
 export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default' }) => {
   const navigate = useSafeNavigate();
+  const [searchParams, setSearchParams] = useSafeSearchParams();
+
+  // Check for platform query param (from landing pages)
+  const platformParam = searchParams.get('platform');
+
+  // Validate platform query param against known platforms
+  const validPlatformParam =
+    platformParam && platformParam in PLATFORM_CONFIGS ? platformParam : undefined;
+  const effectivePlatform = validPlatformParam || initialPlatform;
+
   // For 'default', use linkedin as the actual platform but SEO will handle it differently
-  const actualPlatform = initialPlatform === 'default' ? 'linkedin' : initialPlatform;
+  const actualPlatform = effectivePlatform === 'default' ? 'linkedin' : effectivePlatform;
   const platformConfig = PLATFORM_CONFIGS[actualPlatform];
   const validPlatform = platformConfig ? actualPlatform : 'linkedin';
 
@@ -305,13 +331,28 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
   const { drafts, saveDraft, loadError, clearLoadError } = useHistory();
   const { toasts, addToast, removeToast } = useToast();
 
-  // Sync platform with URL when initialPlatform changes (from route)
+  // Sync platform with URL when initialPlatform or query params change
   useEffect(() => {
-    const newValidPlatform = PLATFORM_CONFIGS[initialPlatform] ? initialPlatform : 'linkedin';
+    const effective =
+      (platformParam && platformParam in PLATFORM_CONFIGS ? platformParam : undefined) ||
+      initialPlatform;
+    const newValidPlatform = PLATFORM_CONFIGS[effective] ? effective : 'linkedin';
     if (newValidPlatform !== platform) {
       setPlatformState(newValidPlatform);
     }
-  }, [initialPlatform, platform]);
+  }, [initialPlatform, platform, platformParam]);
+
+  // Clear platform query param after consuming it to avoid confusion when switching platforms
+  useEffect(() => {
+    if (platformParam && platformParam in PLATFORM_CONFIGS) {
+      // Remove the platform param from URL without triggering a navigation
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('platform');
+      setSearchParams(newParams, { replace: true });
+    }
+    // Only run once on mount when platformParam exists
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Memoize the parsed markdown to avoid recomputation
   const socialPreview = useMemo(() => {
