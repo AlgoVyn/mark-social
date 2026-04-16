@@ -97,7 +97,37 @@ export const PLATFORM_CONFIGS: Record<string, PlatformConfig> = {
 export const getPlatformConfig = (platform: string): PlatformConfig =>
   PLATFORM_CONFIGS[platform] || PLATFORM_CONFIGS.linkedin;
 
-// Helper function to calculate character count considering URLs
+/**
+ * URL regex pattern that excludes trailing punctuation.
+ *
+ * This regex matches http/https URLs but excludes common punctuation
+ * characters (.,;:!?')]}>) that might appear at the end of a URL in text,
+ * which are likely sentence terminators rather than part of the URL.
+ *
+ * Inside the character class [], ']' must be escaped as '\]' but other
+ * characters like ')', '>', and ''' do not need escaping.
+ *
+ * Examples:
+ * - "Visit https://example.com." -> matches "https://example.com" (excludes period)
+ * - "Check out https://example.com/path!" -> matches "https://example.com/path" (excludes !)
+ * - "Link: (https://example.com)" -> matches "https://example.com" (excludes ))
+ */
+const URL_REGEX = /https?:\/\/[^\s\]>,;:!?'"]+(?:[^\s\]>,;:!?'"]*[^\s\]>,;:!?'"])?/g;
+
+// Twitter's t.co shortener uses 23 characters for all URLs
+const TWITTER_URL_LENGTH = 23;
+
+/**
+ * Calculates the character count of text, accounting for URL shortening.
+ *
+ * For platforms that support links (like Twitter), URLs are counted as a
+ * fixed length (23 characters for Twitter's t.co shortener) rather than
+ * their actual character count.
+ *
+ * @param text - The text to count
+ * @param platform - The platform key
+ * @returns The effective character count
+ */
 export const calculateCharacterCount = (text: string, platform: string): number => {
   const config = getPlatformConfig(platform);
 
@@ -105,20 +135,30 @@ export const calculateCharacterCount = (text: string, platform: string): number 
     return text.length;
   }
 
-  const urls = text.match(/https?:\/\/[^\s]+/g) || [];
+  const urls = text.match(URL_REGEX) || [];
   if (urls.length === 0) {
     return text.length;
   }
 
-  // Twitter counts all URLs as 23 characters
-  const urlPlaceholderLength = 23;
-  return text.length - urls.reduce((sum, url) => sum + url.length - urlPlaceholderLength, 0);
+  return text.length - urls.reduce((sum, url) => sum + url.length - TWITTER_URL_LENGTH, 0);
 };
 
-export const getCharacterCountStatus = (
-  text: string,
-  platform: string
-): { count: number; limit: number; percentage: number; isOver: boolean; isWarning: boolean } => {
+export interface CharacterCountStatus {
+  count: number;
+  limit: number;
+  percentage: number;
+  isOver: boolean;
+  isWarning: boolean;
+}
+
+/**
+ * Gets comprehensive character count status for a platform.
+ *
+ * @param text - The text to analyze
+ * @param platform - The platform key
+ * @returns Status object with count, limit, percentage, and warning states
+ */
+export const getCharacterCountStatus = (text: string, platform: string): CharacterCountStatus => {
   const config = getPlatformConfig(platform);
   const count = calculateCharacterCount(text, platform);
   const limit = config.characterLimit;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Toolbar } from './Toolbar';
 import { MarkdownEditor } from './MarkdownEditor';
@@ -20,16 +20,31 @@ interface WorkspaceProps {
   initialPlatform?: string;
 }
 
-// Custom hook that safely uses navigate or returns a no-op
+// Timing constants (in milliseconds)
+const TIMING = {
+  /** Debounce delay for auto-saving drafts */
+  DRAFT_SAVE_DELAY: 2000,
+  /** Minimum loading state duration for history button feedback */
+  HISTORY_LOADING_MIN: 150,
+  /** Loading state duration after draft load completes */
+  HISTORY_LOADING_COMPLETE: 200,
+  /** Duration to show copying state for visual feedback */
+  COPY_FEEDBACK_DURATION: 300,
+} as const;
+
+// Custom hook that safely uses navigate or returns a no-op with logging
 const useSafeNavigate = () => {
   try {
     return useNavigate();
-  } catch {
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn('[useSafeNavigate] useNavigate not available - outside Router context:', error);
+    }
     return () => {};
   }
 };
 
-// Custom hook for search params
+// Custom hook for search params with logging
 const useSafeSearchParams = (): [
   URLSearchParams,
   (
@@ -39,7 +54,13 @@ const useSafeSearchParams = (): [
 ] => {
   try {
     return useSearchParams();
-  } catch {
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn(
+        '[useSafeSearchParams] useSearchParams not available - outside Router context:',
+        error
+      );
+    }
     return [new URLSearchParams(), () => {}];
   }
 };
@@ -47,6 +68,7 @@ const useSafeSearchParams = (): [
 export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default' }) => {
   const navigate = useSafeNavigate();
   const [searchParams, setSearchParams] = useSafeSearchParams();
+  const hasProcessedQueryParam = useRef(false);
 
   const platformParam = searchParams.get('platform');
   const validPlatform =
@@ -77,15 +99,15 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
     }
   }, [validPlatform, platform]);
 
-  // Clear platform query param after consuming it
+  // Clear platform query param after consuming it (runs only once per mount)
   useEffect(() => {
-    if (platformParam && platformParam in PLATFORM_CONFIGS) {
+    if (!hasProcessedQueryParam.current && platformParam && platformParam in PLATFORM_CONFIGS) {
+      hasProcessedQueryParam.current = true;
       const newParams = new URLSearchParams(searchParams);
       newParams.delete('platform');
       setSearchParams(newParams, { replace: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [platformParam, searchParams, setSearchParams]);
 
   const socialPreview = useMemo(
     () => markdownToSocialText(markdown, formatStyle),
@@ -93,7 +115,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
   );
 
   useEffect(() => {
-    const timeout = setTimeout(() => saveDraft(markdown), 2000);
+    const timeout = setTimeout(() => saveDraft(markdown), TIMING.DRAFT_SAVE_DELAY);
     return () => clearTimeout(timeout);
   }, [markdown, saveDraft]);
 
@@ -133,7 +155,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
     } catch {
       addToast('Failed to copy to clipboard', 'error');
     } finally {
-      setTimeout(() => setIsCopying(false), 300);
+      setTimeout(() => setIsCopying(false), TIMING.COPY_FEEDBACK_DURATION);
     }
   }, [socialPreview, addToast, platform]);
 
@@ -144,7 +166,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
     setTimeout(() => {
       setIsLoadingHistory(false);
       setIsHistoryOpen(true);
-    }, 150);
+    }, TIMING.HISTORY_LOADING_MIN);
   }, []);
 
   const handleLoadDraft = useCallback(
@@ -153,7 +175,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
       setMarkdown(draft.markdown);
       setIsHistoryOpen(false);
       addToast('Draft loaded successfully', 'success');
-      setTimeout(() => setIsLoadingHistory(false), 200);
+      setTimeout(() => setIsLoadingHistory(false), TIMING.HISTORY_LOADING_COMPLETE);
     },
     [addToast]
   );

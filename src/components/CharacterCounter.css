@@ -6,6 +6,9 @@
   padding: 0.5rem;
   border-radius: 0.5rem;
   transition: all 0.2s ease;
+  /* Typography */
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
 }
 
 .counter-display {
@@ -16,15 +19,16 @@
 }
 
 .counter-text {
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   color: var(--counter-text-muted);
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  line-height: var(--leading-tight);
 }
 
 .counter-text strong {
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   color: var(--text-color);
   transition: color 0.3s ease;
 }
@@ -35,7 +39,7 @@
 
 .counter-limit {
   color: var(--counter-text-muted);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
 }
 
 .counter-ring {
@@ -43,8 +47,9 @@
   height: 2.5rem;
   flex-shrink: 0;
   transform-origin: center;
-  will-change: transform;
   transition: transform 0.2s ease;
+  /* Performance: Only optimize during animations */
+  will-change: auto;
 }
 
 .counter-ring-bg {
@@ -59,8 +64,9 @@
 }
 
 .counter-message {
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   color: var(--counter-text-muted);
+  line-height: var(--leading-tight);
 }
 
 /* Status variants using CSS variables */
@@ -102,7 +108,7 @@
 
 .counter-over .counter-message {
   color: var(--counter-over-color);
-  font-weight: 500;
+  font-weight: var(--font-medium);
 }
 
 /* Responsive: Mobile character counter */
@@ -118,84 +124,64 @@
   }
 
   .counter-text {
-    font-size: 0.8rem;
+    font-size: var(--text-sm);
   }
 
   .counter-message {
-    font-size: 0.7rem;
+    font-size: var(--text-xs);
   }
 }
 
 /* ============ ANIMATIONS ============ */
 
-/* 1. Idle breathing animation for ALL states */
+/* 1. Idle breathing animation - subtle opacity pulse */
 @keyframes breathe {
   0%,
   100% {
     opacity: 1;
   }
   50% {
-    opacity: 0.85;
+    opacity: 0.9;
   }
 }
 
 .character-counter {
-  animation: breathe 3s ease-in-out infinite;
+  animation: breathe 4s ease-in-out infinite;
 }
 
-/* 2. Ring rotation animation - subtle continuous motion */
-@keyframes slowRotate {
-  from {
-    transform: rotate(-90deg);
-  }
-  to {
-    transform: rotate(270deg);
-  }
-}
-
-.counter-ring {
-  animation: slowRotate 8s linear infinite;
-}
-
-/* 3. Glow pulse for OK state */
+/* 2. OK state - gentle glow pulse only (no rotation) */
 @keyframes okGlow {
   0%,
   100% {
-    filter: drop-shadow(0 0 2px var(--counter-ok-color));
+    filter: drop-shadow(0 0 1px var(--counter-ok-color));
   }
   50% {
-    filter: drop-shadow(0 0 4px var(--counter-ok-color));
+    filter: drop-shadow(0 0 3px var(--counter-ok-color));
   }
 }
 
 .counter-ok .counter-ring {
-  animation:
-    slowRotate 8s linear infinite,
-    okGlow 2s ease-in-out infinite;
+  animation: okGlow 3s ease-in-out infinite;
+  will-change: filter;
 }
 
-/* 4. Warning pulse animation */
+/* 3. Warning state - pulse the display (not the ring) */
 @keyframes warningPulse {
   0%,
   100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 2px var(--counter-warning-color));
   }
   50% {
-    transform: scale(1.03);
-    filter: drop-shadow(0 0 6px var(--counter-warning-color));
+    transform: scale(1.02);
   }
 }
 
 .counter-warning .counter-display {
-  animation: warningPulse 1.5s ease-in-out infinite;
+  animation: warningPulse 2s ease-in-out infinite;
+  will-change: transform;
 }
 
-.counter-warning .counter-ring {
-  animation: slowRotate 8s linear infinite;
-}
-
-/* 5. Over limit shake animation */
+/* 4. Over limit - one-time shake animation */
 @keyframes overShake {
   0%,
   100% {
@@ -218,13 +204,10 @@
 
 .counter-over .counter-display {
   animation: overShake 0.5s ease-in-out;
+  will-change: transform;
 }
 
-.counter-over .counter-ring {
-  animation: slowRotate 8s linear infinite;
-}
-
-/* 6. Message slide-in animation */
+/* 5. Message slide-in animation */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -240,9 +223,10 @@
   animation: slideIn 0.3s ease-out;
 }
 
-/* 7. Hover scale effect */
+/* 6. Hover scale effect - only on :hover to save GPU */
 .character-counter:hover .counter-ring {
   transform: scale(1.08);
+  transition: transform 0.2s ease;
 }
 
 /* Reduced motion support */
@@ -257,5 +241,24 @@
 
   .character-counter:hover .counter-ring {
     transform: none;
+  }
+
+  .counter-ring,
+  .counter-warning .counter-display,
+  .counter-over .counter-display {
+    will-change: auto;
+  }
+}
+
+/* Touch feedback - subtle pulse on tap */
+@media (pointer: coarse) {
+  .character-counter {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .character-counter:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
   }
 }

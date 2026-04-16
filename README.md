@@ -38,7 +38,7 @@ A sleek editor that converts Markdown into perfectly formatted posts for LinkedI
 
 ```bash
 # Clone and install
-git clone <repo-url> && cd md-to-social
+git clone <repo-url> && cd markdown2social
 npm install
 
 # Start dev server

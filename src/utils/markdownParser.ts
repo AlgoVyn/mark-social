@@ -84,12 +84,56 @@ export const parseMarkdown = (
   return forClipboard ? applyInlineStyles(cleanHtml) : cleanHtml;
 };
 
-// Unicode offset mappings for bold/italic variants
+/**
+ * Unicode Mathematical Alphanumeric Symbols block offsets.
+ *
+ * These Unicode code points represent stylized versions of ASCII characters
+ * that appear as bold or italic text in most modern platforms.
+ *
+ * Limitations:
+ * - Only converts ASCII A-Z, a-z, and 0-9 (for bold)
+ * - Non-ASCII characters (accents, emoji, CJK, Cyrillic, etc.) are preserved as-is
+ * - This is intentional: Unicode math symbols only cover basic Latin characters
+ *
+ * For characters outside ASCII range, standard text is preserved without styling.
+ * Example: "**Café**" becomes "𝐂𝐚𝐟é" (C, a, f are bold; é remains regular)
+ *
+ * @see https://unicode.org/charts/PDF/U1D400.pdf Mathematical Alphanumeric Symbols
+ */
 const UNICODE_OFFSETS = {
-  bold: { upper: 0x1d3bf, lower: 0x1d3b9, digit: 0x1d79e }, // 0x1d400 - 0x41, 0x1d41a - 0x61, 0x1d7ce - 0x30
-  italic: { upper: 0x1d5c7, lower: 0x1d5c1, digit: null }, // 0x1d608 - 0x41, 0x1d622 - 0x61
+  /**
+   * Bold variant: Mathematical Bold Capital/Small Letters (U+1D400-U+1D433)
+   * Digits: Mathematical Bold Digit Zero-Nine (U+1D7CE-U+1D7D7)
+   */
+  bold: {
+    upper: 0x1d3bf, // 0x1d400 (bold A) - 0x41 (ASCII A)
+    lower: 0x1d3b9, // 0x1d41a (bold a) - 0x61 (ASCII a)
+    digit: 0x1d79e, // 0x1d7ce (bold 0) - 0x30 (ASCII 0)
+  },
+  /**
+   * Italic variant: Mathematical Italic Capital/Small Letters (U+1D608-U+1D63B)
+   * Note: No digit support for italic in the Unicode standard
+   */
+  italic: {
+    upper: 0x1d5c7, // 0x1d608 (italic A) - 0x41 (ASCII A)
+    lower: 0x1d5c1, // 0x1d622 (italic a) - 0x61 (ASCII a)
+    digit: null, // No italic digits in Unicode math symbols
+  },
 };
 
+/**
+ * Converts ASCII characters to Unicode mathematical variant characters.
+ *
+ * @param str - Input string to convert
+ * @param variant - 'bold' or 'italic'
+ * @returns String with ASCII characters converted to Unicode variants
+ *
+ * @example
+ * toUnicodeVariant('Hello', 'bold') // Returns '𝐇𝐞𝐥𝐥𝐨'
+ * toUnicodeVariant('Hello 123', 'bold') // Returns '𝐇𝐞𝐥𝐥𝐨 𝟏𝟐𝟑' (bold digits)
+ * toUnicodeVariant('Hello', 'italic') // Returns '𝐻𝑒𝑙𝑙𝑜'
+ * toUnicodeVariant('Café', 'bold') // Returns '𝐂𝐚𝐟é' (é preserved as-is)
+ */
 const toUnicodeVariant = (str: string, variant: 'bold' | 'italic'): string => {
   const offsets = UNICODE_OFFSETS[variant];
 
@@ -97,31 +141,63 @@ const toUnicodeVariant = (str: string, variant: 'bold' | 'italic'): string => {
     .split('')
     .map((c) => {
       const code = c.charCodeAt(0);
-      if (code >= 65 && code <= 90) return String.fromCodePoint(code + offsets.upper);
-      if (code >= 97 && code <= 122) return String.fromCodePoint(code + offsets.lower);
+      // ASCII A-Z -> Bold/Italic variant
+      if (code >= 65 && code <= 90) {
+        return String.fromCodePoint(code + offsets.upper);
+      }
+      // ASCII a-z -> Bold/Italic variant
+      if (code >= 97 && code <= 122) {
+        return String.fromCodePoint(code + offsets.lower);
+      }
+      // ASCII 0-9 -> Bold variant only (no italic digits in Unicode)
       if (variant === 'bold' && offsets.digit && code >= 48 && code <= 57) {
         return String.fromCodePoint(code + offsets.digit);
       }
+      // Non-ASCII characters (emoji, accents, etc.) are preserved unchanged
       return c;
     })
     .join('');
 };
 
-// Private Use Area delimiter characters
+// Private Use Area delimiter characters for temporarily masking code blocks
 const DELIM_START = '\uE000';
 const DELIM_END = '\uE001';
 
 /**
- * Converts Markdown directly into plain text heavily utilizing
- * Unicode characters (for bold/italic) suitable for pasting into
- * social media composers like LinkedIn.
+ * Converts Markdown directly into plain text utilizing Unicode mathematical
+ * symbols for bold/italic styling suitable for pasting into social media
+ * composers like LinkedIn, Twitter/X, etc.
+ *
+ * ## Supported Markdown Features
+ * - Headers (# ## ###) → Bold text
+ * - **bold** → Unicode bold characters
+ * - *italic* or _italic_ → Unicode italic characters
+ * - Lists (-, *, 1.) → Bullet points or numbers
+ * - [text](url) → text (url)
+ * - Code blocks and inline code → Preserved with backticks
+ *
+ * ## Unicode Conversion Limitations
+ *
+ * The Unicode mathematical symbols block only includes basic Latin characters:
+ * - A-Z, a-z (for both bold and italic)
+ * - 0-9 (bold only, no italic digits exist in Unicode)
+ *
+ * Non-ASCII characters are preserved in their original form:
+ * - Accented characters: "Café" → "𝐂𝐚𝐟é" (é stays regular)
+ * - Emoji: "**🔥**" → "🔥" (unchanged)
+ * - CJK characters: "**日本**" → "日本" (unchanged)
+ * - Cyrillic: "**Привет**" → "Привет" (unchanged)
+ *
+ * @param markdown - The markdown text to convert
+ * @param style - Formatting style: 'standard', 'bullet-optimized', or 'bold-headers'
+ * @returns Plain text with Unicode styling for social media
  */
 export const markdownToSocialText = (markdown: string, style: string = 'standard'): string => {
   let text = markdown;
   const codeBlocks: { lang: string; code: string }[] = [];
   const inlineCodes: string[] = [];
 
-  // Extract code blocks and inline codes
+  // Extract code blocks and inline codes to preserve them from formatting
   text = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (_match, lang, code) => {
     codeBlocks.push({ lang: lang || '', code: code.trim() });
     return `${DELIM_START}CODEBLOCK${codeBlocks.length - 1}${DELIM_END}`;

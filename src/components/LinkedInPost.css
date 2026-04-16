@@ -4,13 +4,14 @@
   border: 1px solid var(--border-color);
   width: 100%;
   max-width: 552px; /* Standard LinkedIn feed width */
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.08),
-    0 2px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-platform);
   font-family:
     -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans',
     Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;
+  transition:
+    background-color var(--transition-normal),
+    border-color var(--transition-normal);
 }
 
 .post-header {
@@ -24,6 +25,16 @@
   height: 48px;
   border-radius: 50%;
   background-color: var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background: linear-gradient(135deg, var(--surface-color) 0%, var(--border-color) 100%);
+  border: 2px solid var(--border-color);
+}
+
+.profile-pic-placeholder svg {
+  opacity: 0.6;
 }
 
 .post-meta {
@@ -39,32 +50,34 @@
 }
 
 .author-name {
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   font-size: 14px;
   color: var(--text-color);
+  line-height: var(--leading-tight);
 }
 
 .connection-degree {
   font-size: 14px;
   color: var(--text-secondary);
+  line-height: var(--leading-tight);
 }
 
 .author-headline {
-  font-size: 12px;
+  font-size: var(--text-xs);
   color: var(--text-secondary);
-  line-height: 1.3;
+  line-height: var(--leading-tight);
 }
 
 .post-time {
-  font-size: 12px;
+  font-size: var(--text-xs);
   color: var(--text-secondary);
-  line-height: 1.3;
+  line-height: var(--leading-tight);
 }
 
 .post-content {
   padding: 0 16px 8px 16px;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: var(--leading-normal);
   color: var(--text-color);
   word-wrap: break-word;
   white-space: pre-wrap;
@@ -79,7 +92,7 @@
 .post-content a {
   color: var(--primary-color);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--font-semibold);
 }
 
 .post-content a:hover {
@@ -102,12 +115,17 @@
   padding: 12px 8px;
   border-radius: 4px;
   color: var(--text-secondary);
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
   flex-grow: 1;
   justify-content: center;
+  /* Touch feedback support */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .footer-action:hover {
@@ -115,16 +133,74 @@
   color: var(--text-color);
 }
 
-/* Profile picture with icon */
-.profile-pic-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  background: linear-gradient(135deg, var(--surface-color) 0%, var(--border-color) 100%);
-  border: 2px solid var(--border-color);
+.footer-action:active {
+  background-color: var(--secondary-hover);
 }
 
-.profile-pic-placeholder svg {
-  opacity: 0.6;
+/* Touch feedback for mobile */
+@media (pointer: coarse) {
+  .footer-action {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .footer-action:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+    background-color: var(--secondary-hover);
+  }
+
+  .footer-action:hover {
+    transform: none;
+    background-color: transparent;
+  }
+
+  .footer-action:hover {
+    background-color: var(--bg-color);
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .linkedin-post {
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .post-content {
+    font-size: 15px;
+    line-height: var(--leading-relaxed);
+  }
+
+  .footer-action {
+    padding: 10px 6px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-header {
+    padding: 10px 12px;
+  }
+
+  .post-content {
+    padding: 0 12px 8px 12px;
+    font-size: 15px;
+  }
+
+  .footer-action {
+    padding: 8px 4px;
+  }
+
+  .footer-action span {
+    display: none; /* Hide text, show only icons on very small screens */
+  }
+}
+
+/* Show full footer action on slightly larger small screens */
+@media (min-width: 360px) and (max-width: 480px) {
+  .footer-action span {
+    display: inline;
+    font-size: 12px;
+  }
 }

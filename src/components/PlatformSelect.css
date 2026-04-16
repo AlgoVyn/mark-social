@@ -24,6 +24,9 @@
   transition: all var(--transition-fast);
   box-shadow: var(--shadow-sm);
   box-sizing: border-box;
+  /* Touch feedback support */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .platform-select-trigger:hover {
@@ -43,16 +46,25 @@
   transform: translateY(0);
 }
 
+/* Touch feedback */
+@media (pointer: coarse) {
+  .platform-select-trigger:active {
+    transform: scale(0.96);
+  }
+  
+  .platform-select-trigger:hover {
+    transform: none;
+  }
+}
+
 /* Platform icon - sized to match other toolbar icons */
 .platform-icon {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
-  background-color: #ffffff !important;
-  border-radius: 4px;
-  padding: 2px;
   box-sizing: content-box;
-  color: #1e1e1e !important;
+  color: var(--text-color);
+  transition: all var(--transition-fast);
 }
 
 /* Platform name - compact display */
@@ -86,6 +98,7 @@
   top: calc(100% + 4px);
   left: 0;
   min-width: 180px;
+  max-width: calc(100vw - 2rem);
   z-index: var(--z-dropdown);
   margin: 0;
   padding: 0.25rem;
@@ -97,6 +110,7 @@
   max-height: 300px;
   overflow-y: auto;
   box-sizing: border-box;
+  right: auto;
 }
 
 /* Dropdown option */
@@ -106,12 +120,14 @@
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
-  border-radius: var(--radius-sm);
+  border-radius: calc(var(--radius-md) / 2);
   transition: all var(--transition-fast);
   color: var(--text-secondary);
   font-size: 0.875rem;
   font-weight: 500;
   box-sizing: border-box;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .platform-select-option:hover {
@@ -124,12 +140,22 @@
   color: white;
 }
 
-/* Keep icons dark even when selected/hovered - they have white backgrounds */
-.platform-select-option.selected .platform-icon,
-.platform-select-option:hover .platform-icon,
-.platform-select-trigger .platform-icon {
-  background-color: #ffffff !important;
-  color: #1e1e1e !important;
+/* Touch feedback for options */
+@media (pointer: coarse) {
+  .platform-select-option:active {
+    transform: scale(0.98);
+    background-color: var(--secondary-hover);
+  }
+  
+  .platform-select-option.selected:active {
+    background-color: var(--primary-color);
+    opacity: 0.9;
+  }
+}
+
+/* Selected item icon styling - white on primary background */
+.platform-select-option.selected .platform-icon {
+  color: white;
 }
 
 /* Scrollbar styling for dropdown */
@@ -150,7 +176,10 @@
   background: var(--text-secondary);
 }
 
-/* Responsive adjustments */
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
 @media (max-width: 768px) {
   .platform-select-trigger {
     font-size: 0.8rem;
@@ -166,6 +195,9 @@
   .platform-select-dropdown {
     max-height: 250px;
     min-width: 160px;
+    max-width: calc(100vw - 2rem);
+    left: 0;
+    right: auto;
   }
 
   .platform-select-option {
@@ -188,10 +220,34 @@
 
   .platform-select-dropdown {
     min-width: 140px;
+    max-width: calc(100vw - 1rem);
+    left: 0;
   }
 
   .platform-select-option {
     font-size: 0.75rem;
     padding: 0.35rem 0.5rem;
+  }
+}
+
+/* ============================================
+   EDGE DETECTION - Prevent viewport overflow
+   ============================================ */
+
+.platform-select-dropdown {
+  contain: layout style;
+}
+
+.platform-select-custom.dropdown-align-right .platform-select-dropdown {
+  left: auto;
+  right: 0;
+}
+
+@media (max-width: 320px) {
+  .platform-select-dropdown {
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%);
+    min-width: 200px;
   }
 }

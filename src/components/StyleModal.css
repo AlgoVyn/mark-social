@@ -10,8 +10,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: var(--z-modal);
   animation: fadeIn 0.2s ease-out;
+  /* Ensure modal doesn't overflow on small screens */
+  padding: 1rem;
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    /* Lighter overlay on mobile for better visibility */
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem;
+  }
 }
 
 @keyframes fadeIn {
@@ -29,9 +40,28 @@
   border-radius: var(--radius-xl);
   width: 90%;
   max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-color);
   animation: scaleUp 0.2s ease-out;
+  /* Ensure modal doesn't overflow viewport */
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem 1rem;
+    border-radius: var(--radius-lg);
+  }
 }
 
 @keyframes scaleUp {
@@ -49,13 +79,18 @@
   margin-top: 0;
   margin-bottom: 1.5rem;
   color: var(--text-color);
-  font-weight: 700;
+  font-weight: var(--font-bold);
+  font-size: var(--text-xl);
+  line-height: var(--leading-tight);
 }
 
 .style-options {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 .style-option {
@@ -67,10 +102,14 @@
   cursor: pointer;
   transition: all var(--transition-normal);
   background-color: var(--surface-color);
+  /* Touch feedback support */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .style-option:hover {
   border-color: var(--text-secondary);
+  transform: translateY(-1px);
 }
 
 .style-option.active {
@@ -79,22 +118,45 @@
   box-shadow: 0 0 0 1px var(--primary-color);
 }
 
+/* Touch feedback */
+@media (pointer: coarse) {
+  .style-option:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  .style-option:hover {
+    transform: none;
+  }
+
+  .style-option.active:active {
+    transform: scale(0.98);
+  }
+}
+
 .style-option input {
   margin-top: 4px;
   accent-color: var(--primary-color);
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
 }
 
 .style-option strong {
   display: block;
   margin-bottom: 4px;
   color: var(--text-color);
-  font-weight: 600;
+  font-weight: var(--font-semibold);
+  font-size: var(--text-base);
+  line-height: var(--leading-tight);
 }
 
 .style-option p {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   color: var(--text-secondary);
+  line-height: var(--leading-normal);
 }
 
 .modal-actions {
@@ -109,10 +171,15 @@
   color: white;
   border: none;
   border-radius: var(--radius-md);
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   cursor: pointer;
   transition: all var(--transition-fast);
   box-shadow: var(--shadow-sm);
+  font-size: var(--text-base);
+  line-height: var(--leading-tight);
+  /* Touch feedback support */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .close-btn:hover {
@@ -123,4 +190,39 @@
 
 .close-btn:active {
   transform: translateY(0);
+}
+
+/* Touch feedback */
+@media (pointer: coarse) {
+  .close-btn {
+    min-height: 44px; /* Ensure touch target size */
+    min-width: 44px;
+  }
+
+  .close-btn:active {
+    transform: scale(0.96);
+    filter: brightness(0.95);
+    transition: transform 0.1s ease;
+  }
+
+  .close-btn:hover {
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Modal responsive adjustments for very small screens */
+@media (max-width: 320px) {
+  .modal-content {
+    padding: 1.25rem 1rem;
+    max-height: 95vh;
+  }
+
+  .style-option {
+    padding: 1rem;
+  }
+
+  .modal-content h2 {
+    font-size: var(--text-lg);
+  }
 }

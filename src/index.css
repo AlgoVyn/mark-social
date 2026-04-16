@@ -5,6 +5,46 @@
   --bg-color: #ffffff;
   --surface-color: #f3f3f3;
   --text-color: #1e1e1e;
+
+  /* ============================================
+     TYPOGRAPHY SCALE - Defined Hierarchy
+     ============================================ */
+  /* Font Sizes */
+  --text-xs: 0.75rem; /* 12px - captions, timestamps */
+  --text-sm: 0.875rem; /* 14px - secondary text, labels */
+  --text-base: 1rem; /* 16px - body text */
+  --text-md: 1.125rem; /* 18px - emphasis */
+  --text-lg: 1.25rem; /* 20px - section titles */
+  --text-xl: 1.5rem; /* 24px - modal titles */
+  --text-2xl: 2rem; /* 32px - hero text */
+
+  /* Line Heights */
+  --leading-tight: 1.4;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* ============================================
+     PLATFORM PREVIEW VARIABLES
+     ============================================ */
+  /* Instagram */
+  --instagram-bg: #ffffff;
+  --instagram-text: #262626;
+  --instagram-text-secondary: #8e8e8e;
+  --instagram-border: #dbdbdb;
+  --instagram-border-light: #efefef;
+  --instagram-link-warning-bg: #fef3c7;
+  --instagram-link-warning-border: #f59e0b;
+  --instagram-link-warning-text: #92400e;
+
+  /* Platform Preview Shadows */
+  --shadow-platform: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 3px rgba(0, 0, 0, 0.04);
+
   --text-secondary: #6e6e6e;
   --border-color: #e5e5e5;
 
@@ -19,8 +59,8 @@
   /* Counter Status Colors */
   --counter-ok-color: #16825d;
   --counter-ok-bg: rgba(22, 130, 93, 0.1);
-  --counter-warning-color: #b8860b;
-  --counter-warning-bg: rgba(184, 134, 11, 0.12);
+  --counter-warning-color: #d97706; /* More vibrant amber (was #b8860b) */
+  --counter-warning-bg: rgba(217, 119, 6, 0.12);
   --counter-over-color: #c75450;
   --counter-over-bg: rgba(199, 84, 80, 0.15);
   --counter-text-muted: #6e6e6e;
@@ -61,7 +101,7 @@
   --bg-color: #1e1e1e;
   --surface-color: #252526;
   --text-color: #d4d4d4;
-  --text-secondary: #858585;
+  --text-secondary: #a0a0a0; /* Lightened for 5:1 contrast (was #858585) */
   --border-color: #3c3c3c;
 
   --primary-color: #007acc;
@@ -86,8 +126,18 @@
   --counter-warning-bg: rgba(255, 193, 7, 0.2);
   --counter-over-color: #ff6b6b;
   --counter-over-bg: rgba(255, 107, 107, 0.2);
-  --counter-text-muted: #858585;
+  --counter-text-muted: #a0a0a0; /* Lightened for better contrast */
   --counter-ring-bg: #3c3c3c;
+
+  /* Instagram Preview - Dark Mode */
+  --instagram-bg: #000000;
+  --instagram-text: #f5f5f5;
+  --instagram-text-secondary: #a8a8a8;
+  --instagram-border: #363636;
+  --instagram-border-light: #262626;
+  --instagram-link-warning-bg: #451a03;
+  --instagram-link-warning-border: #b45309;
+  --instagram-link-warning-text: #fbbf24;
 }
 
 body {
@@ -108,6 +158,8 @@ body {
   transition:
     background-color var(--transition-normal),
     color var(--transition-normal);
+  /* Apply consistent line height */
+  line-height: var(--leading-normal);
 }
 
 .app-container {
@@ -206,7 +258,48 @@ body {
   background: var(--primary-hover);
 }
 
-/* Premium Shadow System */
+/* ============================================
+   TOUCH FEEDBACK - Scale effect on active
+   ============================================ */
+@media (pointer: coarse) {
+  /* Touch feedback for buttons */
+  button:active,
+  .action-button:active,
+  .platform-select-trigger:active,
+  .platform-select-option:active,
+  .style-option:active,
+  .instagram-action-btn:active,
+  .footer-action:active {
+    transform: scale(0.96) !important;
+    transition: transform 0.1s ease !important;
+  }
+
+  /* Prevent sticky hover states on touch devices */
+  button:hover,
+  .action-button:hover,
+  .platform-select-trigger:hover {
+    transform: none;
+  }
+}
+
+/* Mobile-specific touch feedback */
+@media (pointer: coarse) and (max-width: 768px) {
+  /* Enhanced touch feedback for mobile */
+  .action-button,
+  .platform-select-trigger,
+  .style-option,
+  .modal-actions button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .action-button:active,
+  .platform-select-trigger:active,
+  .style-option:active,
+  .modal-actions button:active {
+    transform: scale(0.95);
+  }
+}
 
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {

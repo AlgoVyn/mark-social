@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   background-color: var(--bg-color);
+  position: relative;
 }
 
 .preview-header {
@@ -12,38 +13,47 @@
   justify-content: space-between;
   background-color: var(--surface-color);
   border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  backdrop-filter: blur(8px);
 }
 
 .preview-title {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--text-md);
+  font-weight: var(--font-semibold);
   color: var(--text-color);
+  line-height: var(--leading-tight);
 }
 
 .preview-badge {
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   background-color: var(--bg-color);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   color: var(--primary-color);
+  letter-spacing: 0.025em;
 }
 
 .preview-content {
   flex: 1;
   overflow-y: auto;
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  /* Ensure content can scroll freely */
+  min-height: 0;
 }
 
 .unsupported-platform {
   color: var(--text-secondary);
   font-style: italic;
   padding: 2rem;
+  font-size: var(--text-sm);
 }
 
 /* Generic Preview Styles */
@@ -74,13 +84,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: var(--font-bold);
   font-size: 18px;
 }
 
 .platform-name {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: var(--font-semibold);
+  font-size: var(--text-base);
   color: var(--text-color);
 }
 
@@ -90,16 +100,16 @@
 
 .generic-preview-content p {
   margin: 0;
-  line-height: 1.6;
+  line-height: var(--leading-normal);
   color: var(--text-color);
   white-space: pre-wrap;
-  font-size: 15px;
+  font-size: var(--text-base);
 }
 
 .generic-preview-meta {
   padding-top: 12px;
   border-top: 1px solid var(--border-color);
-  font-size: 13px;
+  font-size: var(--text-sm);
   color: var(--text-secondary);
 }
 
@@ -108,12 +118,17 @@
   font-style: italic;
   padding: 3rem;
   text-align: center;
+  font-size: var(--text-sm);
 }
 
-/* Instagram Preview */
+/* Instagram Preview - Now uses CSS variables */
 .instagram-preview {
-  background: #fff;
-  border: 1px solid #dbdbdb;
+  background: var(--instagram-bg);
+  border: 1px solid var(--instagram-border);
+  color: var(--instagram-text);
+  transition:
+    background-color var(--transition-normal),
+    border-color var(--transition-normal);
 }
 
 .instagram-header {
@@ -131,18 +146,20 @@
 }
 
 .instagram-username {
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   font-size: 14px;
-  color: #262626;
+  color: var(--instagram-text);
 }
 
 .instagram-content p {
-  color: #262626;
+  color: var(--instagram-text);
+  line-height: var(--leading-normal);
 }
 
 .instagram-meta {
-  font-size: 12px;
-  color: #8e8e8e;
+  font-size: var(--text-xs);
+  color: var(--instagram-text-secondary);
+  line-height: var(--leading-tight);
 }
 
 /* Enhanced Empty State Styles */
@@ -189,16 +206,17 @@
 }
 
 .empty-state-title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--text-md);
+  font-weight: var(--font-semibold);
   color: var(--text-color);
   margin: 0 0 0.75rem 0;
+  line-height: var(--leading-tight);
 }
 
 .empty-state-message {
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: var(--leading-normal);
   margin: 0 0 0.75rem 0;
   max-width: 280px;
 }
@@ -217,8 +235,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   color: var(--text-secondary);
+  line-height: var(--leading-tight);
 }
 
 .tip-item svg {
@@ -240,6 +259,7 @@
   color: var(--text-secondary);
   font-style: italic;
   margin: 0;
+  font-size: var(--text-sm);
 }
 
 /* Responsive adjustments */
@@ -254,10 +274,72 @@
   }
 
   .empty-state-title {
-    font-size: 1.125rem;
+    font-size: var(--text-lg);
   }
 
   .empty-state-message {
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
+  }
+
+  .preview-content {
+    padding: 1rem;
+  }
+
+  .preview-header {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ============ CSS CONTAINMENT FOR PERFORMANCE ============ */
+
+/* Isolate rendering of preview components for better performance */
+.preview-container {
+  /* Layout containment - isolate layout calculations */
+  contain: layout style;
+}
+
+/* Contain platform-specific preview cards */
+.generic-preview,
+.instagram-preview,
+.linkedin-post,
+.twitter-thread-container,
+.bluesky-post,
+.mastodon-post,
+.threads-post,
+.discord-message,
+.reddit-post,
+.youtube-description {
+  /* Strict containment for preview cards - they don't affect outside layout */
+  contain: layout style paint;
+}
+
+/* Empty state doesn't need strict containment as it may resize */
+.empty-state {
+  contain: layout style;
+}
+
+/* Performance: Disable containment for reduced motion preference 
+   (users may prefer simpler rendering) */
+@media (prefers-reduced-motion: reduce) {
+  .preview-container,
+  .generic-preview,
+  .empty-state {
+    contain: none;
+  }
+}
+
+/* Touch feedback for preview actions */
+@media (pointer: coarse) {
+  .instagram-action-btn,
+  .footer-action,
+  .twitter-action-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .instagram-action-btn:active,
+  .footer-action:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
   }
 }

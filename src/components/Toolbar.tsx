@@ -1,7 +1,7 @@
 import React from 'react';
 import { Settings, Copy, Clock, Sun, Moon, Loader2 } from 'lucide-react';
 import { PlatformSelect } from './PlatformSelect';
-import logoUrl from '../../logo/logo.svg';
+import logoUrl from '@assets/logo.svg';
 import './Toolbar.css';
 
 interface ToolbarProps {

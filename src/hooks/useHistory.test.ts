@@ -23,7 +23,7 @@ describe('useHistory', () => {
 
       renderHook(() => useHistory());
 
-      expect(localStorage.getItem).toHaveBeenCalledWith('md-to-social-drafts');
+      expect(localStorage.getItem).toHaveBeenCalledWith('markdown2social-drafts');
     });
 
     it('should handle invalid localStorage data gracefully', () => {
@@ -115,7 +115,10 @@ describe('useHistory', () => {
         result.current.saveDraft('Draft to save');
       });
 
-      expect(localStorage.setItem).toHaveBeenCalledWith('md-to-social-drafts', expect.any(String));
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'markdown2social-drafts',
+        expect.any(String)
+      );
     });
 
     it('should add new drafts at the beginning of the array', () => {
@@ -224,7 +227,10 @@ describe('error handling', () => {
     expect(result.current.drafts[0].markdown).toBe('Draft that will fail to persist');
 
     // Should log warning
-    expect(consoleSpy).toHaveBeenCalledWith('Failed to save draft to localStorage:', quotaError);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      '[useHistory] Failed to save draft to localStorage:',
+      quotaError
+    );
 
     consoleSpy.mockRestore();
   });

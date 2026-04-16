@@ -8,6 +8,7 @@
   -webkit-backdrop-filter: var(--glass-blur);
   border-bottom: 1px solid var(--glass-border);
   box-shadow: var(--shadow-sm);
+  will-change: transform;
   position: relative;
   z-index: 50;
 }
@@ -56,6 +57,7 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   box-shadow: var(--shadow-sm);
+  will-change: transform;
 }
 
 .action-button:hover {
@@ -331,5 +333,53 @@
   .toolbar .action-button::after {
     max-width: 120px;
     font-size: 0.65rem;
+  }
+}
+
+/* ============================================
+   TOUCH FEEDBACK - Enhanced for touch devices
+   ============================================ */
+
+/* Touch feedback: Scale down on active */
+@media (pointer: coarse) {
+  .action-button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .action-button:active {
+    transform: scale(0.96) !important;
+    transition: transform 0.1s ease !important;
+  }
+
+  .action-button.primary:active {
+    transform: scale(0.96) !important;
+    filter: brightness(0.95);
+  }
+
+  /* Disable hover transform on touch to prevent sticky hover states */
+  .action-button:hover {
+    transform: none;
+  }
+
+  .action-button.primary:hover {
+    transform: none;
+    filter: none;
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* Mobile touch feedback */
+@media (pointer: coarse) and (max-width: 768px) {
+  .action-button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .action-button:active {
+    transform: scale(0.95);
+    transition:
+      transform 0.1s ease,
+      background-color 0.1s ease;
   }
 }

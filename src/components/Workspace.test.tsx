@@ -378,7 +378,7 @@ describe('Workspace', () => {
       });
 
       await waitFor(() => {
-        expect(mockSetItem).toHaveBeenCalledWith('md-to-social-drafts', expect.any(String));
+        expect(mockSetItem).toHaveBeenCalledWith('markdown2social-drafts', expect.any(String));
       });
     });
 

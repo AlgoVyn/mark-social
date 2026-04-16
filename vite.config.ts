@@ -82,6 +82,7 @@ export default defineConfig(({ mode }) => {
         '@components': resolve(__dirname, 'src/components'),
         '@utils': resolve(__dirname, 'src/utils'),
         '@hooks': resolve(__dirname, 'src/hooks'),
+        '@assets': resolve(__dirname, 'logo'),
       },
     },
 

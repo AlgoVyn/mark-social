@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Workspace } from './components/Workspace';
 import { PLATFORM_CONFIGS } from './utils/platforms';
 
+// Get base path from Vite environment (removes trailing slash for React Router basename)
+const BASENAME = import.meta.env.BASE_URL?.replace(/\/$/, '') || '/markdown2social';
+
 // Generate routes for all supported platforms
 const platformRoutes = Object.keys(PLATFORM_CONFIGS).map((platform) => (
   <Route key={platform} path={`/${platform}`} element={<Workspace initialPlatform={platform} />} />
@@ -10,7 +13,7 @@ const platformRoutes = Object.keys(PLATFORM_CONFIGS).map((platform) => (
 function App() {
   return (
     <div className="app-container">
-      <BrowserRouter basename="/markdown2social">
+      <BrowserRouter basename={BASENAME}>
         <Routes>
           {/* Default route - Generic SEO for home page */}
           <Route path="/" element={<Workspace initialPlatform="default" />} />

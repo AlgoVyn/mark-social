@@ -10,9 +10,24 @@ interface PlatformSelectProps {
 
 export const PlatformSelect: React.FC<PlatformSelectProps> = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [alignRight, setAlignRight] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLUListElement>(null);
   const selectedConfig = PLATFORM_CONFIGS[value];
   const SelectedIcon = PLATFORM_ICONS[value];
+
+  // Edge detection: Check if dropdown would overflow viewport
+  useEffect(() => {
+    if (isOpen && containerRef.current && dropdownRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const dropdownWidth = 180; // min-width from CSS
+      const viewportWidth = window.innerWidth;
+
+      // Check if dropdown would overflow right edge
+      const wouldOverflowRight = containerRect.left + dropdownWidth > viewportWidth - 16;
+      setAlignRight(wouldOverflowRight);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -25,17 +40,36 @@ export const PlatformSelect: React.FC<PlatformSelectProps> = ({ value, onChange 
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close dropdown on Escape key
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   const handleSelect = (key: string) => {
     onChange(key);
     setIsOpen(false);
   };
 
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="platform-select-custom" ref={containerRef}>
+    <div
+      className={`platform-select-custom ${alignRight ? 'dropdown-align-right' : ''}`}
+      ref={containerRef}
+    >
       <button
         type="button"
         className="platform-select-trigger"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label="Select social media platform"
@@ -54,7 +88,7 @@ export const PlatformSelect: React.FC<PlatformSelectProps> = ({ value, onChange 
       </button>
 
       {isOpen && (
-        <ul className="platform-select-dropdown" role="listbox">
+        <ul className="platform-select-dropdown" role="listbox" ref={dropdownRef}>
           {Object.entries(PLATFORM_CONFIGS).map(([key, config]) => {
             const Icon = PLATFORM_ICONS[key];
             return (

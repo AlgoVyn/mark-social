@@ -27,10 +27,11 @@
   flex-direction: column;
 }
 
-/* Right pane layout - ensure CharacterCounter is visible */
+/* Right pane layout - ensure CharacterCounter is visible and sticky */
 .pane.right-pane {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .pane.right-pane > div {
@@ -38,6 +39,7 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
+  position: relative;
 }
 
 .pane.right-pane .preview-container {
@@ -46,10 +48,16 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-/* Ultra-compact Character Counter at bottom */
+/* Sticky Character Counter at bottom */
 .pane.right-pane .character-counter {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
   flex-shrink: 0;
   padding: 0.35rem 0.75rem;
   background-color: var(--surface-color);
@@ -60,6 +68,16 @@
   gap: 0.5rem;
   min-height: 36px;
   max-height: 36px;
+  /* Add subtle shadow for depth when sticky */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+  /* Ensure it stays above preview content */
+  backdrop-filter: blur(4px);
+}
+
+/* Glass effect for character counter in dark mode */
+[data-theme='dark'] .pane.right-pane .character-counter {
+  background-color: rgba(37, 37, 38, 0.95);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .pane.right-pane .character-counter .counter-display {
@@ -73,13 +91,15 @@
 }
 
 .pane.right-pane .character-counter .counter-text {
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
 }
 
 .pane.right-pane .character-counter .counter-message {
   font-size: 0.7rem;
   white-space: nowrap;
 }
+
+/* Responsive: Stack panes vertically on mobile */
 
 /* Responsive: Stack panes vertically on mobile */
 @media (max-width: 768px) {
@@ -99,14 +119,19 @@
 
   .pane {
     flex: none;
-    height: 50vh;
+    /* Use min-height instead of fixed height for flexibility */
     min-height: 300px;
+    /* Allow content to determine height but cap with max-height */
+    max-height: 60vh;
+    height: auto;
   }
 
   .pane.right-pane .character-counter {
     padding: 0.3rem 0.75rem;
     min-height: 32px;
     max-height: 32px;
+    /* Less shadow on mobile */
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -118,8 +143,23 @@
   }
 
   .pane {
-    height: 60vh;
+    /* Further reduce min-height for very small screens */
     min-height: 250px;
+    max-height: 70vh;
     border-radius: var(--radius-lg);
+  }
+
+  /* Ensure character counter is still sticky on small screens */
+  .pane.right-pane .character-counter {
+    position: sticky;
+    bottom: 0;
+  }
+}
+
+/* Touch feedback for the workspace */
+@media (pointer: coarse) {
+  .workspace {
+    /* Ensure smooth scrolling on touch devices */
+    -webkit-overflow-scrolling: touch;
   }
 }
