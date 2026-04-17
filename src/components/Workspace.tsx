@@ -69,6 +69,7 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
   const navigate = useSafeNavigate();
   const [searchParams, setSearchParams] = useSafeSearchParams();
   const hasProcessedQueryParam = useRef(false);
+  const pendingSaveRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const platformParam = searchParams.get('platform');
   const validPlatform =
@@ -115,8 +116,22 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
   );
 
   useEffect(() => {
-    const timeout = setTimeout(() => saveDraft(markdown), TIMING.DRAFT_SAVE_DELAY);
-    return () => clearTimeout(timeout);
+    // Clear any existing timeout
+    if (pendingSaveRef.current) {
+      clearTimeout(pendingSaveRef.current);
+    }
+
+    // Set new timeout
+    pendingSaveRef.current = setTimeout(() => {
+      saveDraft(markdown);
+      pendingSaveRef.current = null;
+    }, TIMING.DRAFT_SAVE_DELAY);
+
+    return () => {
+      if (pendingSaveRef.current) {
+        clearTimeout(pendingSaveRef.current);
+      }
+    };
   }, [markdown, saveDraft]);
 
   useEffect(() => {

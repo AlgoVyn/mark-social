@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Workspace } from './components/Workspace';
-import { PLATFORM_CONFIGS } from './utils/platforms';
+import { Workspace } from './components';
+import { PLATFORM_CONFIGS } from './utils';
 
 // Get base path from Vite environment (removes trailing slash for React Router basename)
 const BASENAME = import.meta.env.BASE_URL?.replace(/\/$/, '') || '/marksocial';

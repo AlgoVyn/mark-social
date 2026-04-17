@@ -1,11 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { generateId } from '../utils/id';
+import { generateId } from '../utils';
+import { validateDrafts, sanitizeMarkdown, type ValidatedDraft } from '../utils/validation';
 
-export interface Draft {
-  id: string;
-  markdown: string;
-  updatedAt: number;
-}
+export type Draft = ValidatedDraft;
 
 export interface UseHistoryReturn {
   drafts: Draft[];
@@ -37,8 +34,15 @@ export function useHistory(): UseHistoryReturn {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          setDrafts(parsed);
+        const validated = validateDrafts(parsed);
+
+        if (validated) {
+          // Apply additional sanitization to markdown content
+          const sanitizedDrafts = validated.map((draft) => ({
+            ...draft,
+            markdown: sanitizeMarkdown(draft.markdown),
+          }));
+          setDrafts(sanitizedDrafts);
         } else {
           setLoadError('Saved drafts data is corrupted. History will reset on next save.');
         }
@@ -57,7 +61,7 @@ export function useHistory(): UseHistoryReturn {
 
       const newDraft: Draft = {
         id: generateId(),
-        markdown,
+        markdown: sanitizeMarkdown(markdown),
         updatedAt: Date.now(),
       };
 
