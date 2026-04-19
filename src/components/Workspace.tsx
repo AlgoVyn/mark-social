@@ -32,57 +32,30 @@ const TIMING = {
   COPY_FEEDBACK_DURATION: 300,
 } as const;
 
-// Custom hook that safely uses navigate or returns a no-op with logging
-const useSafeNavigate = () => {
-  try {
-    return useNavigate();
-  } catch (error) {
-    if (import.meta.env.DEV) {
-      console.warn('[useSafeNavigate] useNavigate not available - outside Router context:', error);
-    }
-    return () => {};
-  }
-};
-
-// Custom hook for search params with logging
-const useSafeSearchParams = (): [
-  URLSearchParams,
-  (
-    params?: URLSearchParams | ((prev: URLSearchParams) => URLSearchParams),
-    opts?: { replace?: boolean }
-  ) => void,
-] => {
-  try {
-    return useSearchParams();
-  } catch (error) {
-    if (import.meta.env.DEV) {
-      console.warn(
-        '[useSafeSearchParams] useSearchParams not available - outside Router context:',
-        error
-      );
-    }
-    return [new URLSearchParams(), () => {}];
-  }
-};
-
+// Note: This component must be rendered within a Router context.
+// The useNavigate and useSearchParams hooks will throw if used outside Router.
 export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default' }) => {
-  const navigate = useSafeNavigate();
-  const [searchParams, setSearchParams] = useSafeSearchParams();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const hasProcessedQueryParam = useRef(false);
   const pendingSaveRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const platformParam = searchParams.get('platform');
-  const validPlatform =
-    platformParam && platformParam in PLATFORM_CONFIGS ? platformParam : initialPlatform;
-  const actualPlatform = validPlatform === 'default' ? 'linkedin' : validPlatform;
-  const platformConfig = PLATFORM_CONFIGS[actualPlatform] || PLATFORM_CONFIGS.linkedin;
-  const finalPlatform = platformConfig ? actualPlatform : 'linkedin';
+
+  // Get valid platform from URL param or initialPlatform, default to linkedin
+  const getValidPlatform = (p: string | null): string =>
+    p && p in PLATFORM_CONFIGS ? p : 'linkedin';
+
+  const platformFromUrl = getValidPlatform(platformParam);
+  const defaultPlatform =
+    initialPlatform === 'default' ? 'linkedin' : getValidPlatform(initialPlatform);
+  const initialPlatformValue = platformParam ? platformFromUrl : defaultPlatform;
 
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   const [markdown, setMarkdown] = useState(
-    () => PLATFORM_TEMPLATES[finalPlatform] || PLATFORM_TEMPLATES.linkedin
+    () => PLATFORM_TEMPLATES[initialPlatformValue] || PLATFORM_TEMPLATES.linkedin
   );
-  const [platform, setPlatformState] = useState(finalPlatform);
+  const [platform, setPlatformState] = useState(initialPlatformValue);
   const seoPlatform = initialPlatform === 'default' ? 'default' : platform;
   const [formatStyle, setFormatStyle] = useState('standard');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -91,14 +64,6 @@ export const Workspace: React.FC<WorkspaceProps> = ({ initialPlatform = 'default
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const { drafts, saveDraft, loadError, clearLoadError } = useHistory();
   const { toasts, addToast, removeToast } = useToast();
-
-  // Sync platform with URL
-  useEffect(() => {
-    const newValidPlatform = PLATFORM_CONFIGS[validPlatform] ? validPlatform : 'linkedin';
-    if (newValidPlatform !== platform) {
-      setPlatformState(newValidPlatform);
-    }
-  }, [validPlatform, platform]);
 
   // Clear platform query param after consuming it (runs only once per mount)
   useEffect(() => {

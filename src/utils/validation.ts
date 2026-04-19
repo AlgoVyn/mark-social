@@ -20,22 +20,28 @@ export const DraftsArraySchema = z.array(DraftSchema);
 export type ValidatedDraft = z.infer<typeof DraftSchema>;
 
 /**
+ * Validates data against a Zod schema
+ * @param schema - Zod schema to validate against
+ * @param data - Unknown data to validate
+ * @param context - Context string for error logging
+ * @returns Validated data or null if invalid
+ */
+function validate<T>(schema: z.ZodType<T>, data: unknown, context: string): T | null {
+  const result = schema.safeParse(data);
+  if (result.success) {
+    return result.data;
+  }
+  console.warn(`[validation] ${context} failed:`, result.error.issues);
+  return null;
+}
+
+/**
  * Validates and sanitizes draft data from localStorage
  * @param data - Unknown data to validate
  * @returns Validated drafts array or null if invalid
  */
 export function validateDrafts(data: unknown): ValidatedDraft[] | null {
-  try {
-    const result = DraftsArraySchema.safeParse(data);
-    if (result.success) {
-      return result.data;
-    }
-    console.warn('[validation] Draft validation failed:', result.error.issues);
-    return null;
-  } catch (error) {
-    console.warn('[validation] Unexpected validation error:', error);
-    return null;
-  }
+  return validate(DraftsArraySchema, data, 'Drafts validation');
 }
 
 /**
@@ -44,17 +50,7 @@ export function validateDrafts(data: unknown): ValidatedDraft[] | null {
  * @returns Validated draft or null if invalid
  */
 export function validateSingleDraft(data: unknown): ValidatedDraft | null {
-  try {
-    const result = DraftSchema.safeParse(data);
-    if (result.success) {
-      return result.data;
-    }
-    console.warn('[validation] Single draft validation failed:', result.error.issues);
-    return null;
-  } catch (error) {
-    console.warn('[validation] Unexpected validation error:', error);
-    return null;
-  }
+  return validate(DraftSchema, data, 'Single draft validation');
 }
 
 /**

@@ -122,8 +122,7 @@ const URL_REGEX = /https?:\/\/[^\s\]>,;:!?'"]+(?:[^\s\]>,;:!?'"]*[^\s\]>,;:!?'"]
  * Calculates the character count of text, accounting for URL shortening.
  *
  * For platforms with URL shorteners (like Twitter's t.co), URLs are counted
- * as a fixed length rather than their actual character count. For platforms
- * without URL shorteners, URLs are counted at their actual length.
+ * as a fixed length rather than their actual character count.
  *
  * @param text - The text to count
  * @param platform - The platform key
@@ -131,22 +130,15 @@ const URL_REGEX = /https?:\/\/[^\s\]>,;:!?'"]+(?:[^\s\]>,;:!?'"]*[^\s\]>,;:!?'"]
  */
 export const calculateCharacterCount = (text: string, platform: string): number => {
   const config = getPlatformConfig(platform);
-
-  if (!config.supportsLinks) {
-    return text.length;
-  }
-
-  const urls = text.match(URL_REGEX) || [];
-  if (urls.length === 0) {
-    return text.length;
-  }
-
-  // If platform has a URL shortener (like Twitter's t.co), use the fixed length
-  // Otherwise, count URLs at their actual length
   const urlTargetLength = config.urlShortenerLength;
 
+  // No URL shortener configured - count at actual length
   if (urlTargetLength === undefined) {
-    // No URL shortener - count URLs at actual length
+    return text.length;
+  }
+
+  const urls = text.match(URL_REGEX);
+  if (!urls?.length) {
     return text.length;
   }
 

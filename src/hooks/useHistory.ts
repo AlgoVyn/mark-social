@@ -17,42 +17,36 @@ const MAX_DRAFTS = 20;
 // Storage key for drafts
 const STORAGE_KEY = 'marksocial-drafts';
 
+const isQuotaError = (e: unknown): boolean =>
+  e instanceof Error && (e.name === 'QuotaExceededError' || e.message.includes('quota'));
+
 /**
  * Attempts to save drafts to localStorage with auto-trimming on quota exceeded.
  * Will progressively reduce the number of drafts until save succeeds or minimum is reached.
  *
  * @param drafts - Array of drafts to save
  * @param minDrafts - Minimum number of drafts to try (default: 1, just the newest)
- * @returns Object with success flag and number of drafts actually saved
+ * @returns Number of drafts actually saved, or null if failed
  */
-function trySaveWithTrimming(
-  drafts: Draft[],
-  minDrafts: number = 1
-): { success: boolean; savedCount: number } {
-  let draftsToTry = drafts;
+function trySaveWithTrimming(drafts: Draft[], minDrafts = 1): number | null {
+  let count = drafts.length;
 
-  while (draftsToTry.length >= minDrafts) {
+  while (count >= minDrafts) {
+    const toSave = drafts.slice(0, count);
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(draftsToTry));
-      return { success: true, savedCount: draftsToTry.length };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+      return count;
     } catch (e) {
-      const isQuotaError =
-        e instanceof Error && (e.name === 'QuotaExceededError' || e.message.includes('quota'));
-
-      if (isQuotaError && draftsToTry.length > minDrafts) {
-        // Try with fewer drafts - remove older drafts from the end
-        // Keep roughly half, but at least minDrafts
-        const newLength = Math.max(minDrafts, Math.floor(draftsToTry.length / 2));
-        draftsToTry = draftsToTry.slice(0, newLength);
-        console.warn(`[useHistory] Quota exceeded, trying with ${draftsToTry.length} drafts`);
-      } else {
-        // Either not a quota error or we've reached minimum drafts
-        throw e;
+      if (!isQuotaError(e) || count <= minDrafts) {
+        throw e; // Re-throw non-quota errors or when we can't trim further
       }
+      // Reduce by half (but not below minDrafts) and retry
+      count = Math.max(minDrafts, Math.floor(count / 2));
+      console.warn(`[useHistory] Quota exceeded, trying with ${count} drafts`);
     }
   }
-  // This should never be reached, but satisfies TypeScript control flow analysis
-  throw new Error('[useHistory] Unexpected exit from trySaveWithTrimming loop');
+
+  return null; // Failed even with minimum drafts
 }
 
 /**
@@ -114,20 +108,20 @@ export function useHistory(): UseHistoryReturn {
         const next = [newDraft, ...prev].slice(0, MAX_DRAFTS);
 
         try {
-          const result = trySaveWithTrimming(next, 1);
+          const savedCount = trySaveWithTrimming(next, 1);
 
-          if (result.success) {
+          if (savedCount !== null) {
             // Clear any previous error on success - use setTimeout to avoid setState in render
             if (loadError) {
               setTimeout(() => setLoadError(null), 0);
             }
 
             // If we had to trim drafts, return the trimmed array
-            if (result.savedCount < next.length) {
+            if (savedCount < next.length) {
               console.warn(
-                `[useHistory] Trimmed drafts from ${next.length} to ${result.savedCount} due to storage limits`
+                `[useHistory] Trimmed drafts from ${next.length} to ${savedCount} due to storage limits`
               );
-              return next.slice(0, result.savedCount);
+              return next.slice(0, savedCount);
             }
           }
         } catch (e) {
