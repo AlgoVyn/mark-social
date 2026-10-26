@@ -172,16 +172,6 @@
         if (location.hostname === 'localhost' || location.search.includes('debug=1')) {
           console.log('404 error:', errorInfo);
         }
-
-        // Send to analytics if GA is configured
-        // Uncomment below when Google Analytics is set up:
-        // if (typeof gtag === 'function') {
-        //   gtag('event', '404_error', {
-        //     event_category: 'error',
-        //     event_label: errorInfo.path,
-        //     custom_parameter_1: errorInfo.referrer
-        //   });
-        // }
       })();
     </script>
   </body>
